@@ -9,30 +9,6 @@ const Poetry = () => {
   const { theme } = useTheme();
 
   const poems = {
-    "morning-coffee-reflections": {
-      title: "Morning Coffee Reflections",
-      content: `Steam rises from my cup like thoughts ascending to clarity,
-Each swirl a meditation on the day ahead.
-The bitter warmth awakens more than senses—
-It stirs the soul from its nocturnal rest.
-
-In this quiet hour before the world intrudes,
-I find myself in the space between sleep and wake,
-Where dreams still linger on the edges of consciousness
-And possibilities stretch infinite and unnamed.
-
-The coffee cools as contemplation deepens,
-Its surface reflecting the morning light
-That filters through my window like hope
-Through the fabric of an ordinary day.
-
-Here, in this simple ritual of warmth and waiting,
-I discover that peace lives not in grand gestures
-But in the gentle ceremony of being present
-To the steam rising from my cup.`,
-      date: "March 2024",
-      mood: "Contemplative",
-    },
     "city-lights": {
       title: "City Lights",
       content: `Neon dreams paint the midnight sky in shades of possibility,
@@ -61,86 +37,43 @@ In the beautiful anonymity
 Of being small beneath the vast sky.`,
       date: "February 2024",
       mood: "Nostalgic",
+      feature: false,
     },
-    "digital-solitude": {
-      title: "Digital Solitude",
+    "the-seasons": {
+      title: "The seasons",
       content: ``,
       date: "January 2024",
       mood: "Melchondly",
       pdf_link: "",
+      feature: true,
     },
-    "autumns-code": {
-      title: "Autumn's Code",
-      content: `Leaves fall like deprecated functions,
-Making way for new growth,
-Each branch pruned by wind and time
-Writing its own elegant algorithm.
-
-The trees debug themselves naturally,
-Releasing what no longer serves,
-Their golden output scattered on the ground
-Like comments left by a careful programmer.
-
-I walk through this organic repository,
-Where version control is managed by seasons
-And every change is committed
-To the eternal branch of becoming.
-
-The air is crisp with the scent of transformation,
-Each breath a compilation of possibilities.
-In autumn's quiet refactoring,
-I see the beauty of letting go.
-
-What if we could code like trees?
-Shedding old patterns gracefully,
-Trusting that spring will bring
-Fresh ideas and green growth.
-
-In the rustling of dying leaves,
-I hear the whisper of renewal:
-Sometimes the most elegant solution
-Is knowing when to start over.`,
-      date: "December 2023",
-      mood: "Hopeful",
+    "misty-future": {
+      title: "Misty Future",
+      content: `Falling behind your footsteps,
+Inked within the pale snows.
+Your scent fades the more I try to grasp.
+Stranger, we never have met, but why does your name rings faintly familiar.
+Our shared memories awaken in my mind.
+The tunes unfold gently, their melancholy lingers in the silence of a blank stare.
+Had I ever known you at all?`,
+      date: "January 2024",
+      mood: "Melchondly",
+      pdf_link: "",
+      feature: true,
     },
-    "weight-of-words": {
-      title: "The Weight of Words",
-      content: `Each syllable carries the universe within its sound,
-Heavy with the burden of meaning,
-Light with the possibility of flight.
-We speak worlds into being.
-
-In the beginning was the Word,
-And the word was with us,
-And we are responsible
-For every breath we give it.
-
-I feel the weight of "love" on my tongue,
-How it changes the very air around me.
-I taste the bitterness of "goodbye,"
-The sweetness of "welcome home."
-
-Words are not mere vessels for thoughts—
-They are living things that grow
-In the space between speaker and listener,
-Creating bridges where none existed.
-
-Sometimes I am afraid to speak,
-Knowing that once released,
-Words take on lives of their own,
-Dancing beyond my control.
-
-But silence, too, has its weight,
-Its own gravity that pulls
-At the things we never say,
-The poems that live and die unspoken.
-
-So I choose my words carefully,
-Like a gardener selecting seeds,
-Knowing that what I plant today
-Will bloom in tomorrow's conversations.`,
-      date: "November 2023",
-      mood: "Philosophical",
+    "traces-of-you": {
+      title: "Traces of you",
+      content: `Falling behind your footsteps,
+Inked within the pale snows.
+Your scent fades the more I try to grasp.
+Stranger, we never have met, but why does your name rings faintly familiar.
+Our shared memories awaken in my mind.
+The tunes unfold gently, their melancholy lingers in the silence of a blank stare.
+Had I ever known you at all?`,
+      date: "January 2024",
+      mood: "Melchondly",
+      pdf_link: "",
+      feature: true,
     },
   };
 
