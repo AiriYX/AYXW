@@ -1,39 +1,37 @@
+# Node modules
+node_modules/
+
+# Output directories
+dist/
+build/
+
 # Logs
-logs
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# System files
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
 
-# Ignore all JSON files
-*.json
+# IDE settings
+.vscode/
+.idea/
 
-# Ignore config files
-*.config.*
-*.config
-
-# Optional: ignore lock files
-yarn.lock
-package-lock.json
-
-# Optional: ignore environment variables
+# Environment files
 .env
 .env.*
+
+# Lock files (optional – only if you don't want to track them)
+# bun.lockb
+# package-lock.json
+# yarn.lock
+
+# Cache
+.cache/
+*.tsbuildinfo
+
+# Optional: ignore temporary test files
+*.test.ts.snap
+*.spec.ts.snap
