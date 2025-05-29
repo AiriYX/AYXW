@@ -1,31 +1,21 @@
-# Personal Portfolio
+# Personal Portfolio 🚀
 
-## Project info
+## 🌐 Project Link
 
-**URL**: https://lovable.dev/projects/9695ffb7-7c44-4b9c-a7e1-38f89ec0bbfc
+Coming soon — deploying on GitHub Pages!
 
-# reminders
+## 👩‍💻 About Me
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Hi, I’m Airi — a computer science student and creative technologist who blends structured logic with playful curiosity. I build things that are both functional and thoughtful — from backend tools that streamline life, to interactive pages that carry personality.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Whether it's writing, engineering, or design, I believe in small details that make a big impact. This space is my way of sharing the experiments, side quests, and ideas I’ve brought to life.
 
-# Step 3: Install the necessary dependencies.
-npm i
+Thanks for stopping by.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 🛠️ Technologies Used
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Frontend:** React, TypeScript, Tailwind CSS, HTML5, CSS3
+- **Backend/Tooling:** Vite, Node.js
+- **Design:** Figma, Dribble (for inspiration), Liquidify (for logo)
+- **Version Control:** Git & GitHub
+- **Deployment:** GitHub Pages (coming soon)
