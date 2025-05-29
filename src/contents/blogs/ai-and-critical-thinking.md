@@ -1,8 +1,8 @@
 ---
 title: Can AI Teach Students to Think? The Quest for Critical Thinking in a World of Instant Answers.
-date: 2025-05-02
-category: AI/Tech
-readTime: 10 min read
+date: 2025-03-15 # Corrected to today's date in YYYY-MM-DD format
+category: Technology
+readTime: 6 min read
 ---
 
 The digital age is awash in information, and Artificial Intelligence (AI) rapidly transforms how we interact with information. Its growing presence in education raises concerns about its impact on critical thinking skills. Teachers and students are increasingly exploring AI tools like Gemini, Bard, and ChatGPT, all Natural Language Processing (NLP) technology to enhance learning. Teachers and students are exploring and incorporating AI into their learning and planning routines.

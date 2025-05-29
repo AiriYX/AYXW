@@ -1,9 +1,10 @@
 // src/components/writing/ArticleCard.tsx
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
-import { format } from "date-fns";
+import { format } from "date-fns"; // Make sure date-fns is installed and imported
 import { BlogPostOverviewData } from "@/pages/Writing"; // Import the type from Writing.tsx
 
 interface ArticleCardProps {
@@ -61,7 +62,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ post }) => {
               >
                 <div className="flex items-center space-x-1">
                   <Calendar size={14} />
-                  <span>{format(new Date(post.date), "MMMM d,PPPP")}</span>
+                  {/* Change the format string here */}
+                  <span>{format(new Date(post.date), "MMMM d, yyyy")}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock size={14} />

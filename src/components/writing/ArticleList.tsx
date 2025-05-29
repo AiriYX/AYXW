@@ -1,21 +1,21 @@
 // src/components/writing/ArticleList.tsx
 import React from "react";
 import { useTheme } from "@/contexts/ThemeContext";
-import ArticleCard from "./ArticleCard"; // Import the new ArticleCard
-import { BlogPostOverviewData } from "@/pages/Writing"; // Import the type from Writing.tsx
+import ArticleCard from "./ArticleCard";
+import { BlogPostOverviewData } from "@/pages/Writing";
 
 interface ArticleListProps {
   filteredPosts: BlogPostOverviewData[];
   articleCategories: string[];
-  activeCategory: string;
-  setActiveCategory: (category: string) => void;
+  activeCategories: string[]; // Changed to array
+  toggleCategory: (category: string) => void; // New function to toggle categories
 }
 
 const ArticleList: React.FC<ArticleListProps> = ({
   filteredPosts,
   articleCategories,
-  activeCategory,
-  setActiveCategory,
+  activeCategories,
+  toggleCategory, // Destructure the new function
 }) => {
   const { theme } = useTheme();
 
@@ -41,9 +41,9 @@ const ArticleList: React.FC<ArticleListProps> = ({
           {articleCategories.map((category) => (
             <button
               key={category}
-              onClick={() => setActiveCategory(category)}
+              onClick={() => toggleCategory(category)} // Use the new toggleCategory function
               className={`px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium transition-all duration-300 ${
-                activeCategory === category
+                activeCategories.includes(category) // Check if category is active
                   ? theme === "dark"
                     ? "bg-fuchsia-500 text-white"
                     : "bg-fuchsia-500 text-white"

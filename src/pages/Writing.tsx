@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react"; // Import useMemo
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 
 import { useTheme } from "@/contexts/ThemeContext";
 
-// Import the new components
 import WritingPageHeader from "@/components/writing/WritingPageHeader";
 import ArticleList from "@/components/writing/ArticleList";
 import PoetrySection from "@/components/writing/PoetrySection";
 
-// Re-defining shared types here for clarity, or you could move them to a separate types file
 export type MarkdownFrontmatter = {
   title: string;
   date: string;
@@ -32,7 +30,7 @@ export type BlogPostOverviewData = {
   readTime: string;
   category: string;
   slug: string;
-  number: string;
+  number: string; // This will now be assigned dynamically in filteredPosts
 };
 
 export type PoemOverviewData = {
@@ -42,14 +40,13 @@ export type PoemOverviewData = {
   mood: string;
   slug: string;
   pdfUrl?: string;
-  featured: boolean; // featured property will always be present after processing
+  featured: boolean;
 };
 
 const Writing = () => {
   const { theme } = useTheme();
-  const navigate = useNavigate(); // Still needed for navigation
+  const navigate = useNavigate();
 
-  // States to hold dynamically loaded articles and poems
   const [blogPosts, setBlogPosts] = useState<BlogPostOverviewData[]>([]);
   const [poems, setPoems] = useState<PoemOverviewData[]>([]);
   const [loadingArticles, setLoadingArticles] = useState(true);
@@ -57,7 +54,6 @@ const Writing = () => {
   const [errorArticles, setErrorArticles] = useState<string | null>(null);
   const [errorPoems, setErrorPoems] = useState<string | null>(null);
 
-  // Categories for articles. Update these if your markdown files use different categories.
   const articleCategories = [
     "All",
     "AI/Tech",
@@ -65,42 +61,59 @@ const Writing = () => {
     "Learning",
     "Technology",
   ];
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategories, setActiveCategories] = useState<string[]>(["All"]);
+
+  const toggleCategory = (category: string) => {
+    setActiveCategories((prevCategories) => {
+      if (category === "All") {
+        return ["All"];
+      } else {
+        const updatedCategories = prevCategories.filter((cat) => cat !== "All");
+
+        if (updatedCategories.includes(category)) {
+          const newCategories = updatedCategories.filter(
+            (cat) => cat !== category
+          );
+          return newCategories.length === 0 ? ["All"] : newCategories;
+        } else {
+          return [...updatedCategories, category];
+        }
+      }
+    });
+  };
 
   useEffect(() => {
-    // Function to load Articles
     const loadArticles = async () => {
       try {
         setLoadingArticles(true);
-        // Use import.meta.glob to load all markdown files eagerly from the blogs directory
         const markdownModules: Record<string, MarkdownModule> =
           import.meta.glob("../contents/blogs/*.md", { eager: true });
 
         const loadedPosts: BlogPostOverviewData[] = Object.entries(
           markdownModules
-        ).map(([path, module], index) => {
+        ).map(([path, module]) => {
+          // Removed index here
           const slug =
-            path.split("/").pop()?.replace(/\.md$/, "") || `post-${index}`;
+            path.split("/").pop()?.replace(/\.md$/, "") || `post-slug`;
           const frontmatter = module.attributes;
-          const content = module.html; // HTML content from markdown is available
+          const content = module.html;
 
-          // Generate excerpt from the first paragraph or a specified length of HTML
           const excerpt = content
-            ? content.replace(/<[^>]*>/g, "").substring(0, 150) + "..." // Strip HTML and take first 150 chars
-            : "No excerpt available."; // Fallback if no content or excerpt in frontmatter
+            ? content.replace(/<[^>]*>/g, "").substring(0, 150) + "..."
+            : "No excerpt available.";
 
           return {
             title: frontmatter.title,
             excerpt: excerpt,
             date: frontmatter.date,
-            readTime: frontmatter.readTime || "N/A", // Provide a fallback if readTime is missing
-            category: frontmatter.category || "Uncategorized", // Provide a fallback if category is missing
+            readTime: frontmatter.readTime || "N/A",
+            category: frontmatter.category || "Uncategorized",
             slug: slug,
-            number: String(index + 1).padStart(2, "0"), // Assign numbers dynamically
+            number: "", // Temporarily set to empty string, will be assigned later
           };
         });
 
-        // Sort posts by date (newest first)
+        // Sort all loaded posts by date (newest first)
         loadedPosts.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
@@ -114,13 +127,11 @@ const Writing = () => {
       }
     };
 
-    // Function to load Poems
     const loadPoetry = async () => {
       try {
         setLoadingPoems(true);
-        // Use import.meta.glob to load all poem markdown files eagerly
         const poemModules: Record<string, MarkdownModule> = import.meta.glob(
-          "../contents/poems/*.md", // Point to the new poems directory
+          "../contents/poems/*.md",
           { eager: true }
         );
 
@@ -129,34 +140,29 @@ const Writing = () => {
             const slug =
               path.split("/").pop()?.replace(/\.md$/, "") || "poem-slug";
             const frontmatter = module.attributes;
-            const content = module.html; // HTML content from markdown is available
+            const content = module.html;
 
-            // Generate excerpt for poems, e.g., first sentence
             const excerpt = content
-              ? content.replace(/<[^>]*>/g, "").split(/[.?!]/)[0] + "." // Strip HTML and get first sentence
-              : "No excerpt available."; // Fallback if no content or excerpt in frontmatter
+              ? content.replace(/<[^>]*>/g, "").split(/[.?!]/)[0] + "."
+              : "No excerpt available.";
 
             return {
               title: frontmatter.title,
               excerpt: excerpt,
               date: frontmatter.date,
-              mood: frontmatter.mood || "General", // Provide a fallback if mood is missing
+              mood: frontmatter.mood || "General",
               slug: slug,
-              pdfUrl: frontmatter.pdfUrl, // Directly use pdfUrl from front matter (can be undefined)
-              featured: frontmatter.featured || false, // Default to false if not specified
+              pdfUrl: frontmatter.pdfUrl,
+              featured: frontmatter.featured || false,
             };
           }
         );
 
-        // Removed the filter for 'featured' poems here
-        // const featuredPoems = loadedPoems.filter(poem => poem.featured);
-
-        // Sort all loaded poems by date (newest first)
         loadedPoems.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
 
-        setPoems(loadedPoems); // Set all loaded poems
+        setPoems(loadedPoems);
       } catch (err) {
         console.error("Failed to load poems:", err);
         setErrorPoems("Failed to load poems.");
@@ -165,18 +171,28 @@ const Writing = () => {
       }
     };
 
-    // Call both loading functions when the component mounts
     loadArticles();
     loadPoetry();
-  }, []); // Empty dependency array means this useEffect runs once on mount
+  }, []);
 
-  // Filter articles based on active category
-  const filteredPosts =
-    activeCategory === "All"
-      ? blogPosts
-      : blogPosts.filter((post) => post.category === activeCategory);
+  // Use useMemo to re-calculate filteredPosts only when blogPosts or activeCategories change
+  const postsToDisplay = useMemo(() => {
+    let currentPosts = blogPosts;
 
-  // Display loading state while data is being fetched
+    // Apply category filtering
+    if (!activeCategories.includes("All")) {
+      currentPosts = blogPosts.filter((post) =>
+        activeCategories.some((cat) => post.category === cat)
+      );
+    }
+
+    // Assign sequential numbers AFTER filtering and sorting
+    return currentPosts.map((post, index) => ({
+      ...post,
+      number: String(index + 1).padStart(2, "0"),
+    }));
+  }, [blogPosts, activeCategories]);
+
   if (loadingArticles || loadingPoems) {
     return (
       <div className="pt-20 min-h-screen flex items-center justify-center">
@@ -193,7 +209,6 @@ const Writing = () => {
     );
   }
 
-  // Display error state if any loading failed
   if (errorArticles || errorPoems) {
     return (
       <div className="pt-20 min-h-screen flex items-center justify-center">
@@ -215,16 +230,15 @@ const Writing = () => {
     <div className="pt-20 min-h-screen">
       <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="animate-fade-in">
-          <WritingPageHeader /> {/* Render the header component */}
+          <WritingPageHeader />
+
           <ArticleList
-            filteredPosts={filteredPosts}
+            filteredPosts={postsToDisplay} // Pass the newly calculated postsToDisplay
             articleCategories={articleCategories}
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-          />{" "}
-          {/* Render the article list component */}
-          {/* Poetry Section */}
-          {/* Now renders all poems, and the PoemCard handles whether to open PDF or navigate to Markdown page */}
+            activeCategories={activeCategories}
+            toggleCategory={toggleCategory}
+          />
+
           <PoetrySection poems={poems} />
         </div>
       </div>
