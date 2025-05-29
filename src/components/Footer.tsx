@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Code, Book, Mail, Heart } from "lucide-react";
@@ -12,7 +11,7 @@ const Footer = () => {
     setTimeout(() => {
       window.scrollTo({
         top: 0,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }, 100);
   };
@@ -101,7 +100,9 @@ const Footer = () => {
                 }`}
               >
                 <link.icon
-                  className={`w-5 h-5 transition-all duration-300 group-hover:scale-110 ${getColorClasses(link.color)}`}
+                  className={`w-5 h-5 transition-all duration-300 group-hover:scale-110 ${getColorClasses(
+                    link.color
+                  )}`}
                 />
               </div>
               <span
@@ -126,7 +127,7 @@ const Footer = () => {
           >
             Made with
             <Heart className="w-3 h-3 text-red-400 animate-pulse" />
-            and alot of music listening
+            &nbsp;| &nbsp;© {new Date().getFullYear()} Yue X. (Airi) Weng
           </p>
         </div>
       </div>

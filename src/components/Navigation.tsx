@@ -29,6 +29,16 @@ const Navigation = () => {
     }, 100);
   };
 
+  const handleNavigation = () => {
+    // Add a small delay to ensure navigation completes before scrolling
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }, 100);
+  };
+
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -61,17 +71,22 @@ const Navigation = () => {
               <Link
                 key={item.path}
                 to={item.path}
+                onClick={handleNavigation}
                 className={`relative font-medium transition-colors duration-200 ${
                   isActive(item.path)
                     ? theme === "dark"
                       ? "text-pink-400"
                       : "text-pink-600"
                     : theme === "dark"
-                      ? "text-neutral-300 hover:text-pink-400"
-                      : "text-neutral-600 hover:text-pink-600"
+                    ? "text-neutral-300 hover:text-pink-400"
+                    : "text-neutral-600 hover:text-pink-600"
                 } after:content-[''] after:absolute after:w-full after:h-0.5 after:bottom-[-4px] after:left-0 after:transition-transform after:duration-300 ${
                   isActive(item.path)
-                    ? `after:scale-x-100 ${theme === "dark" ? "after:bg-pink-400" : "after:bg-pink-600"}`
+                    ? `after:scale-x-100 ${
+                        theme === "dark"
+                          ? "after:bg-pink-400"
+                          : "after:bg-pink-600"
+                      }`
                     : "after:scale-x-0 hover:after:scale-x-100 after:bg-current"
                 }`}
               >
@@ -146,15 +161,18 @@ const Navigation = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    handleNavigation();
+                  }}
                   className={`font-medium transition-all duration-200 transform ${
                     isActive(item.path)
                       ? theme === "dark"
                         ? "text-pink-400"
                         : "text-pink-600"
                       : theme === "dark"
-                        ? "text-neutral-300 hover:text-pink-400"
-                        : "text-neutral-600 hover:text-pink-600"
+                      ? "text-neutral-300 hover:text-pink-400"
+                      : "text-neutral-600 hover:text-pink-600"
                   } ${
                     isMenuOpen
                       ? "translate-x-0 opacity-100"

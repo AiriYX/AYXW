@@ -1,114 +1,64 @@
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { loadMarkdownPost, BlogPostData } from "@/utils/markdownLoader";
 
 const BlogPost = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const [post, setPost] = useState<BlogPostData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const posts = {
-    "AI-and-critical-thinking": {
-      title: "AI and Critical Thinking, are we getting smarter or dumber?",
-      content: `
-        <p>In the world of AI, are we using it to benefit ourselves, that makes us dumber or boosting our intelligence?</p>
-        
-        <h2>The Double-Edged Sword</h2>
-        <p>Artificial Intelligence has become an integral part of our daily lives, from search engines to recommendation systems. But as we increasingly rely on AI to make decisions, solve problems, and even think for us, we must ask ourselves: are we enhancing our cognitive abilities or diminishing them?</p>
-        
-        <h2>The Case for Enhancement</h2>
-        <p>AI can serve as a powerful cognitive amplifier. When used correctly, it can help us process vast amounts of information, identify patterns we might miss, and free up mental resources for higher-level thinking. Students can use AI to quickly research topics, allowing them to focus on analysis and synthesis rather than information gathering.</p>
-        
-        <h2>The Risk of Atrophy</h2>
-        <p>However, there's a genuine concern that over-reliance on AI might lead to cognitive atrophy. Just as GPS navigation has diminished our natural sense of direction, constant AI assistance might weaken our problem-solving muscles and critical thinking skills.</p>
-        
-        <h2>Finding Balance</h2>
-        <p>The key lies in using AI as a tool rather than a crutch. We should leverage AI to augment our capabilities while continuing to exercise our own cognitive functions. This means asking critical questions about AI outputs, understanding the limitations of these systems, and maintaining our ability to think independently.</p>
-        
-        <p>The future belongs to those who can work symbiotically with AI while preserving their uniquely human capacities for creativity, empathy, and critical thought.</p>
-      `,
-      date: "Insert date here",
-      readTime: "8 min read",
-      category: "AI/Tech",
-    },
-    "love-and-spice": {
-      title: "Loving spice? Here may be a reason why.",
-      content: `
-        <p>Wondered why you like spicy food so much? Truth may tell you deeper about your personality.</p>
-        
-        <h2>The Science Behind Spice Preference</h2>
-        <p>Recent research has revealed fascinating connections between spice tolerance and personality traits. People who enjoy spicy foods often share certain psychological characteristics that go beyond mere taste preferences.</p>
-        
-        <h2>Sensation Seeking</h2>
-        <p>Studies have shown that individuals who love spicy food tend to score higher on sensation-seeking personality scales. These are people who actively seek out new, intense, and thrilling experiences. The burn of capsaicin provides a form of controlled danger that appeals to this personality type.</p>
-        
-        <h2>Risk Taking and Adventure</h2>
-        <p>Spice lovers are often more willing to take risks in other areas of their lives. They're the ones who are likely to try extreme sports, travel to unfamiliar places, or take on challenging career moves. The willingness to endure the discomfort of spicy food correlates with a general tolerance for discomfort in pursuit of rewarding experiences.</p>
-        
-        <h2>Social and Cultural Factors</h2>
-        <p>Beyond personality, our spice preferences are deeply influenced by cultural background and social experiences. Growing up in households where spicy food is the norm creates both physiological tolerance and psychological comfort with intense flavors.</p>
-        
-        <h2>The Endorphin Connection</h2>
-        <p>There's also a biochemical component to spice addiction. The pain caused by capsaicin triggers the release of endorphins, creating a natural high. This means that spice lovers might literally be chasing a chemical reward.</p>
-        
-        <p>So the next time someone questions your love for that extra-hot sauce, you can tell them it's not just about the food – it's about who you are as a person.</p>
-      `,
-      date: "Insert date here",
-      readTime: "8 min read",
-      category: "Research",
-    },
-    "community-documentation": {
-      title: "Creating a finder app with...",
-      content: `
-        <p>Documentation on creating a community based web-app/ios app</p>
-        
-        <h2>Project Overview</h2>
-        <p>Building a community-based finder application requires careful consideration of user experience, scalability, and community management features. This documentation outlines the key steps and decisions made during the development process.</p>
-        
-        <h2>Technology Stack</h2>
-        <ul>
-          <li><strong>Frontend:</strong> React Native for cross-platform compatibility</li>
-          <li><strong>Backend:</strong> Node.js with Express framework</li>
-          <li><strong>Database:</strong> MongoDB for flexible data storage</li>
-          <li><strong>Real-time Features:</strong> Socket.io for live updates</li>
-          <li><strong>Maps Integration:</strong> Google Maps API</li>
-        </ul>
-        
-        <h2>Core Features Implementation</h2>
-        
-        <h3>User Authentication</h3>
-        <p>Implemented JWT-based authentication with social login options. Users can register using email or connect through Google/Facebook accounts for faster onboarding.</p>
-        
-        <h3>Location Services</h3>
-        <p>Integrated geolocation APIs to help users find nearby locations and businesses. Implemented caching strategies to reduce API calls and improve performance.</p>
-        
-        <h3>Community Features</h3>
-        <p>Built rating and review systems, user profiles, and social sharing capabilities. Users can create posts, share experiences, and build connections within the community.</p>
-        
-        <h2>Challenges and Solutions</h2>
-        
-        <h3>Scalability</h3>
-        <p>Implemented caching layers and optimized database queries to handle growing user bases. Used CDN for static assets and implemented lazy loading for better performance.</p>
-        
-        <h3>User Engagement</h3>
-        <p>Added gamification elements like badges and achievements to encourage user participation. Implemented push notifications for relevant community updates.</p>
-        
-        <h2>Lessons Learned</h2>
-        <p>Community building is as important as the technical implementation. Regular user feedback sessions helped shape feature priorities and improve user experience.</p>
-        
-        <p>The project taught valuable lessons about balancing feature complexity with user needs, and the importance of building for community engagement from day one.</p>
-      `,
-      date: "Insert date here",
-      readTime: "4 min read",
-      category: "Learning",
-    },
-  };
+  useEffect(() => {
+    // ...existing code...
+    const fetchPost = async () => {
+      if (!slug || typeof slug !== "string") {
+        setError("No post slug provided");
+        setLoading(false);
+        return;
+      }
 
-  const post = posts[slug as keyof typeof posts];
+      try {
+        setLoading(true);
+        console.log("[BlogPost] fetching slug:", slug);
+        const postData = await loadMarkdownPost(slug);
+        console.log("[BlogPost] postData:", postData);
+        if (postData) {
+          setPost(postData);
+        } else {
+          setError("Post not found");
+        }
+      } catch (err) {
+        console.error("Error loading blog post:", err);
+        setError("Failed to load post");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!post) {
+    fetchPost();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="pt-20 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div
+            className={`text-lg ${
+              theme === "dark" ? "text-neutral-300" : "text-neutral-600"
+            }`}
+          >
+            Loading...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !post) {
     return (
       <div className="pt-20 min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -179,7 +129,7 @@ const BlogPost = () => {
           <div
             className={`prose max-w-none ${
               theme === "dark" ? "prose-invert" : ""
-            } prose-lg`}
+            } prose-lg prose-headings:font-serif prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl`}
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </article>

@@ -35,13 +35,14 @@ const AboutSection = () => {
       icon: Building2,
       org: "Paul, Weiss",
       description:
-        "Led digital transformation initiatives for Fortune 500 legal ops with AI",
+        "Led AI rollout and structured workflows to support innovation in legal ops.",
       type: "work",
     },
     {
       icon: GraduationCap,
       org: "CCNY",
-      description: "CS undergrad with focus on automation + website design",
+      description:
+        "CS undergrad with focus on automation + website design | 3.1 GPA",
       type: "education",
     },
     {
@@ -71,10 +72,10 @@ const AboutSection = () => {
       role: "Active Maintainer",
       color: "emerald",
     },
-    { name: "Girls Who Code", role: "Student", color: "blue" },
-    { name: "SEO Scholars", role: "Instructor + Student", color: "purple" },
-    { name: "CODEPATH", role: "Student", color: "rose" },
-    { name: "Rewriting The Code", role: "Member", color: "amber" },
+    { name: "SEO Scholars", role: "Instructor + Scholar", color: "purple" },
+    { name: "CODEPATH", role: "Member", color: "blue" },
+    { name: "Rewriting The Code", role: "Member", color: "blue" },
+    { name: "Girls Who Code", role: "Member", color: "blue" },
   ];
 
   const getCommunityColor = (color: string) => {
@@ -90,18 +91,26 @@ const AboutSection = () => {
 
   return (
     <section
-      className={`relative py-20 px-6 overflow-hidden ${theme === "dark" ? "bg-gradient-to-br from-neutral-900/50 via-neutral-800/30 to-neutral-900/80" : "bg-gradient-to-br from-neutral-50/80 via-white/60 to-neutral-100/50"}`}
+      className={`relative py-20 px-6 overflow-hidden ${
+        theme === "dark"
+          ? "bg-gradient-to-br from-neutral-900/50 via-neutral-800/30 to-neutral-900/80"
+          : "bg-gradient-to-br from-neutral-50/80 via-white/60 to-neutral-100/50"
+      }`}
     >
       {/* Subtle background pattern */}
       <div
-        className={`absolute inset-0 opacity-30 ${theme === "dark" ? "bg-neutral-800/20" : "bg-neutral-100/40"} bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]`}
+        className={`absolute inset-0 opacity-30 ${
+          theme === "dark" ? "bg-neutral-800/20" : "bg-neutral-100/40"
+        } bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]`}
       ></div>
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Elegant quote as header */}
         <div className="text-center mb-20">
           <blockquote
-            className={`text-2xl lg:text-3xl font-light italic leading-relaxed tracking-wide max-w-4xl mx-auto transition-colors duration-300 ${theme === "dark" ? "text-neutral-100" : "text-neutral-700"}`}
+            className={`text-2xl lg:text-3xl font-light italic leading-relaxed tracking-wide max-w-4xl mx-auto transition-colors duration-300 ${
+              theme === "dark" ? "text-neutral-100" : "text-neutral-700"
+            }`}
           >
             "When you drop a book, you don't walk away. You pick it up and keep
             reading. True resilience means never leaving your story unfinished,
@@ -110,7 +119,11 @@ const AboutSection = () => {
 
           {/* Decorative accent line */}
           <div
-            className={`w-24 h-1 rounded-full mx-auto mt-8 ${theme === "dark" ? "bg-gradient-to-r from-fuchsia-400 to-rose-400" : "bg-gradient-to-r from-rose-500 to-fuchsia-500"}`}
+            className={`w-24 h-1 rounded-full mx-auto mt-8 ${
+              theme === "dark"
+                ? "bg-gradient-to-r from-fuchsia-400 to-rose-400"
+                : "bg-gradient-to-r from-rose-500 to-fuchsia-500"
+            }`}
           ></div>
         </div>
 
@@ -118,7 +131,9 @@ const AboutSection = () => {
         <div className="mb-16">
           <div className="text-center mb-8">
             <h2
-              className={`font-playwrite text-2xl lg:text-3xl mb-4 ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+              className={`font-playwrite text-2xl lg:text-3xl mb-4 ${
+                theme === "dark" ? "text-neutral-100" : "text-neutral-800"
+              }`}
             >
               Technical <span className="text-fuchsia-500">Skills</span>
             </h2>
@@ -145,21 +160,29 @@ const AboutSection = () => {
           <div className="text-center mb-12">
             <div className="relative inline-block">
               <h2
-                className={`font-playwrite text-2xl lg:text-3xl mb-4 ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"} relative z-10`}
+                className={`font-playwrite text-2xl lg:text-3xl mb-4 ${
+                  theme === "dark" ? "text-neutral-100" : "text-neutral-800"
+                } relative z-10`}
               >
                 <span className="text-fuchsia-500">Experiences</span> &
                 Education
               </h2>
               {/* Subtle glow effect */}
               <div
-                className={`absolute inset-0 blur-lg opacity-20 ${theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-500"}`}
+                className={`absolute inset-0 blur-lg opacity-20 ${
+                  theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-500"
+                }`}
               >
                 <span className="text-fuchsia-500">Experiences</span> &
                 Education
               </div>
               {/* Soft underline */}
               <div
-                className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-16 h-0.5 rounded-full ${theme === "dark" ? "bg-gradient-to-r from-transparent via-fuchsia-400/60 to-transparent" : "bg-gradient-to-r from-transparent via-fuchsia-500/40 to-transparent"}`}
+                className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-16 h-0.5 rounded-full ${
+                  theme === "dark"
+                    ? "bg-gradient-to-r from-transparent via-fuchsia-400/60 to-transparent"
+                    : "bg-gradient-to-r from-transparent via-fuchsia-500/40 to-transparent"
+                }`}
               ></div>
             </div>
           </div>
@@ -175,20 +198,30 @@ const AboutSection = () => {
                 } group`}
               >
                 <exp.icon
-                  className={`w-5 h-5 flex-shrink-0 ${theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-500"}`}
+                  className={`w-5 h-5 flex-shrink-0 ${
+                    theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-500"
+                  }`}
                 />
 
                 <div className="flex-grow min-w-0">
                   <div className="flex items-center gap-3">
                     <span
-                      className={`font-semibold ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+                      className={`font-semibold ${
+                        theme === "dark"
+                          ? "text-neutral-100"
+                          : "text-neutral-800"
+                      }`}
                     >
                       {exp.org}
                     </span>
-                    {exp.isUpcoming && <span className="text-xs">📌</span>}
+                    {exp.isUpcoming && <span className="text-xs">👈🏻</span>}
                     <span className="text-sm text-neutral-500">—</span>
                     <span
-                      className={`text-sm ${theme === "dark" ? "text-neutral-400" : "text-neutral-600"}`}
+                      className={`text-sm ${
+                        theme === "dark"
+                          ? "text-neutral-400"
+                          : "text-neutral-600"
+                      }`}
                     >
                       {exp.description}
                     </span>
@@ -203,7 +236,9 @@ const AboutSection = () => {
         <div className="mb-12">
           <div className="text-center mb-8">
             <h3
-              className={`font-playwrite text-xl lg:text-2xl mb-4 ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+              className={`font-playwrite text-xl lg:text-2xl mb-4 ${
+                theme === "dark" ? "text-neutral-100" : "text-neutral-800"
+              }`}
             >
               Communities &{" "}
               <span className="text-fuchsia-500">Initiatives</span>
@@ -225,7 +260,9 @@ const AboutSection = () => {
                 }`}
               >
                 <span
-                  className={`font-medium ${theme === "dark" ? "text-neutral-200" : "text-neutral-700"}`}
+                  className={`font-medium ${
+                    theme === "dark" ? "text-neutral-200" : "text-neutral-700"
+                  }`}
                 >
                   {community.name}
                 </span>
@@ -250,7 +287,9 @@ const AboutSection = () => {
             }`}
           >
             <h3
-              className={`text-lg font-medium ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+              className={`text-lg font-medium ${
+                theme === "dark" ? "text-neutral-100" : "text-neutral-800"
+              }`}
             >
               Want to see my full resume?
             </h3>
@@ -262,7 +301,9 @@ const AboutSection = () => {
               }`}
             ></div>
             <p
-              className={`text-sm ${theme === "dark" ? "text-neutral-400" : "text-neutral-600"}`}
+              className={`text-sm ${
+                theme === "dark" ? "text-neutral-400" : "text-neutral-600"
+              }`}
             >
               Email me with the subject line: "Resume Request – [Your Name],
               [Company Name]"

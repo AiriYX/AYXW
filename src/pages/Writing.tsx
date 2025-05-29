@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, ArrowRight, BookOpen, Heart } from "lucide-react";
@@ -10,13 +9,14 @@ const Writing = () => {
 
   const posts = [
     {
-      title: "AI and Critical Thinking, are we getting smarter or dumber?",
+      title:
+        "Can AI Teach Students to Think? The Quest for Critical Thinking in a World of Instant Answers.",
       excerpt:
         "In the world of AI, are we using it to benefit ourselves, that makes us dumber or boosting our intelligence?",
       date: "Insert date here",
       readTime: "8 min read",
       category: "AI/Tech",
-      slug: "AI-and-critical-thinking",
+      slug: "ai-and-critical-thinking",
       number: "01",
     },
     {
@@ -267,7 +267,9 @@ const Writing = () => {
             <div className="text-center mb-12">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <Heart
-                  className={`${theme === "dark" ? "text-rose-400" : "text-rose-600"}`}
+                  className={`${
+                    theme === "dark" ? "text-rose-400" : "text-rose-600"
+                  }`}
                   size={28}
                 />
                 <h2
@@ -278,7 +280,9 @@ const Writing = () => {
                   Poetry
                 </h2>
                 <Heart
-                  className={`${theme === "dark" ? "text-rose-400" : "text-rose-600"}`}
+                  className={`${
+                    theme === "dark" ? "text-rose-400" : "text-rose-600"
+                  }`}
                   size={28}
                 />
               </div>
