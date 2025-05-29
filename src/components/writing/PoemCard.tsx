@@ -34,8 +34,8 @@ const PoemCard: React.FC<PoemCardProps> = ({ poem }) => {
           <span
             className={`text-xs px-2 py-1 rounded-full ${
               theme === "dark"
-                ? "bg-rose-300/20 text-rose-300"
-                : "bg-rose-200 text-rose-600"
+                ? "bg-fuchsia-300/20 text-fuchsia-300"
+                : "bg-fuchsia-200 text-fuchsia-600"
             }`}
           >
             {poem.mood}
@@ -68,8 +68,8 @@ const PoemCard: React.FC<PoemCardProps> = ({ poem }) => {
       <div
         className={`flex items-center gap-2 text-sm transition-colors duration-200 ${
           theme === "dark"
-            ? "text-rose-400 hover:text-white"
-            : "text-rose-600 hover:text-rose-500"
+            ? "text-fuchsia-400 hover:text-white"
+            : "text-fuchsia-600 hover:text-rose-500"
         }`}
       >
         <BookOpen size={14} />

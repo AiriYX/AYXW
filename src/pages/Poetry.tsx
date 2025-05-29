@@ -157,8 +157,8 @@ const Poetry = () => {
           onClick={() => navigate("/writing")}
           className={`flex items-center gap-2 mb-8 transition-colors ${
             theme === "dark"
-              ? "text-rose-400 hover:text-rose-300"
-              : "text-rose-600 hover:text-rose-500"
+              ? "text-fuchsia-400 hover:text-fuchsia-300"
+              : "text-fuchsia-600 hover:text-fuchsia-500"
           }`}
         >
           <ArrowLeft size={16} />
@@ -168,12 +168,6 @@ const Poetry = () => {
         <article className="animate-fade-in">
           <header className="mb-8 text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <Heart
-                className={`${
-                  theme === "dark" ? "text-rose-400" : "text-rose-600"
-                }`}
-                size={24}
-              />
               <span
                 className={`px-3 py-1 rounded-full text-xs font-medium ${
                   theme === "dark"
@@ -183,12 +177,6 @@ const Poetry = () => {
               >
                 {poem.mood}
               </span>
-              <Heart
-                className={`${
-                  theme === "dark" ? "text-rose-400" : "text-rose-600"
-                }`}
-                size={24}
-              />
             </div>
             <h1
               className={`text-3xl md:text-4xl font-bold font-serif mb-4 ${

@@ -18,14 +18,14 @@ const PoetrySection: React.FC<PoetrySectionProps> = ({ poems }) => {
         <div className="flex items-center justify-center gap-3 mb-4">
           <h2
             className={`font-playwrite text-3xl md:text-4xl font-semibold ${
-              theme === "dark" ? "text-rose-400" : "text-rose-500"
+              theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-500"
             }`}
           >
             Poetry
           </h2>
           <Heart
             className={`${
-              theme === "dark" ? "text-rose-400" : "text-rose-600"
+              theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-600"
             }`}
             size={28}
           />

@@ -5,7 +5,7 @@ category: Research
 readTime: 8 min read
 ---
 
-"HOT HOT HOT HOT! SOMEONE GIVE ME A CUP OF COLD WATER!" If you've ever heard or uttered these words after a bite of spicy food, you're not alone. From fiery Korean noodles to a daring Ghost Pepper challenge, the world is full of spice enthusiasts. But have you ever stopped to wonder how they brave the heat without melting down? Or, more intriguing, why do we _crave_ that very sensation?
+From fiery Korean noodles to a daring Ghost Pepper challenge, the world is full of spice enthusiasts. But have you ever stopped to wonder how they brave the heat without melting down? Or, more intriguing, why do we _crave_ that very sensation?
 
 Get ready for a deep dive into the fascinating world of spice, hormones, and the surprising role your brain plays in this fiery affair. It's about to get hot!
 
