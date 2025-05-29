@@ -1,85 +1,115 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+
+// Re-using MarkdownFrontmatter and MarkdownModule types
+export type MarkdownFrontmatter = {
+  title: string;
+  date: string;
+  mood: string;
+  pdfUrl?: string; // pdfUrl is now optional
+};
+
+export type MarkdownModule = {
+  html: string;
+  attributes: MarkdownFrontmatter;
+};
+
+export type PoemData = {
+  title: string;
+  content: string;
+  date: string;
+  mood: string;
+  pdfUrl?: string; // pdfUrl is now optional
+};
 
 const Poetry = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { theme } = useTheme();
 
-  const poems = {
-    "city-lights": {
-      title: "City Lights",
-      content: `Neon dreams paint the midnight sky in shades of possibility,
-Each window a story waiting to be told.
-The city breathes in electric sighs,
-Exhaling the hopes of a million souls.
+  const [poem, setPoem] = useState<PoemData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-Streets pulse with the rhythm of restless hearts,
-Footsteps echoing against concrete and steel.
-In this labyrinth of light and shadow,
-We are all searching for something real.
+  useEffect(() => {
+    const fetchPoem = async () => {
+      if (!slug || typeof slug !== "string") {
+        setError("No poem slug provided");
+        setLoading(false);
+        return;
+      }
 
-The subway rumbles beneath our feet
-Like the heartbeat of some sleeping giant,
-Carrying strangers toward uncertain destinations,
-Each journey a leap of faith.
+      try {
+        setLoading(true);
+        const poemModules: Record<string, MarkdownModule> = import.meta.glob(
+          "../contents/poems/*.md", // Point to the new poems directory
+          { eager: true }
+        );
 
-Above, the stars compete with billboards
-For our attention and our wonder,
-But sometimes, in the space between
-The bright lights and the darkness,
+        const normalizedSlug = slug.toLowerCase();
+        const entry = Object.entries(poemModules).find(([path]) =>
+          path.toLowerCase().endsWith(`/poems/${normalizedSlug}.md`)
+        );
 
-We catch a glimpse of who we truly are—
-Not lost in the crowd, but found
-In the beautiful anonymity
-Of being small beneath the vast sky.`,
-      date: "February 2024",
-      mood: "Nostalgic",
-      feature: false,
-    },
-    "the-seasons": {
-      title: "The seasons",
-      content: ``,
-      date: "January 2024",
-      mood: "Melchondly",
-      pdf_link: "",
-      feature: true,
-    },
-    "misty-future": {
-      title: "Misty Future",
-      content: `Falling behind your footsteps,
-Inked within the pale snows.
-Your scent fades the more I try to grasp.
-Stranger, we never have met, but why does your name rings faintly familiar.
-Our shared memories awaken in my mind.
-The tunes unfold gently, their melancholy lingers in the silence of a blank stare.
-Had I ever known you at all?`,
-      date: "January 2024",
-      mood: "Melchondly",
-      pdf_link: "",
-      feature: true,
-    },
-    "traces-of-you": {
-      title: "Traces of you",
-      content: `Falling behind your footsteps,
-Inked within the pale snows.
-Your scent fades the more I try to grasp.
-Stranger, we never have met, but why does your name rings faintly familiar.
-Our shared memories awaken in my mind.
-The tunes unfold gently, their melancholy lingers in the silence of a blank stare.
-Had I ever known you at all?`,
-      date: "January 2024",
-      mood: "Melchondly",
-      pdf_link: "",
-      feature: true,
-    },
-  };
+        if (!entry) {
+          setError("Poem not found");
+          setLoading(false);
+          return;
+        }
 
-  const poem = poems[slug as keyof typeof poems];
+        const module = entry[1];
+        const poemContent = module.html;
+        const frontmatter = module.attributes;
 
-  if (!poem) {
+        if (frontmatter && poemContent) {
+          setPoem({
+            title: frontmatter.title,
+            content: poemContent,
+            date: frontmatter.date,
+            mood: frontmatter.mood,
+            pdfUrl: frontmatter.pdfUrl, // Pass pdfUrl through
+          });
+        } else {
+          setError("Failed to parse poem content.");
+        }
+      } catch (err) {
+        console.error("Error loading poem:", err);
+        setError("Failed to load poem.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPoem();
+  }, [slug]);
+
+  // If a PDF URL exists, redirect immediately
+  // This ensures that clicking "Open PDF" from Writing.tsx doesn't lead here first.
+  useEffect(() => {
+    if (poem?.pdfUrl) {
+      window.location.href = poem.pdfUrl; // Use window.location.href for direct redirect
+    }
+  }, [poem]); // Only run when poem object changes
+
+  if (loading) {
+    return (
+      <div className="pt-20 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div
+            className={`text-lg ${
+              theme === "dark" ? "text-neutral-300" : "text-neutral-600"
+            }`}
+          >
+            Loading poem...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !poem) {
     return (
       <div className="pt-20 min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -87,6 +117,30 @@ Had I ever known you at all?`,
           <button
             onClick={() => navigate("/writing")}
             className="text-rose-500 hover:text-rose-600 flex items-center gap-2"
+          >
+            <ArrowLeft size={16} />
+            Back to Writing
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Only render if there's no pdfUrl (meaning it's a markdown poem to display)
+  if (poem.pdfUrl) {
+    return (
+      <div className="pt-20 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div
+            className={`text-lg ${
+              theme === "dark" ? "text-neutral-300" : "text-neutral-600"
+            }`}
+          >
+            Redirecting to PDF...
+          </div>
+          <button
+            onClick={() => navigate("/writing")}
+            className="text-rose-500 hover:text-rose-600 flex items-center gap-2 mt-4"
           >
             <ArrowLeft size={16} />
             Back to Writing
@@ -153,12 +207,13 @@ Had I ever known you at all?`,
           </header>
 
           <div
-            className={`max-w-2xl mx-auto text-center leading-relaxed text-lg font-light whitespace-pre-line ${
-              theme === "dark" ? "text-neutral-200" : "text-neutral-700"
+            className={`prose max-w-2xl mx-auto text-center leading-relaxed text-lg font-light whitespace-pre-line ${
+              theme === "dark"
+                ? "prose-invert text-neutral-200"
+                : "text-neutral-700"
             }`}
-          >
-            {poem.content}
-          </div>
+            dangerouslySetInnerHTML={{ __html: poem.content }}
+          />
         </article>
       </div>
     </div>

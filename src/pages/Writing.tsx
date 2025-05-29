@@ -56,13 +56,7 @@ const Writing = () => {
   const [errorArticles, setErrorArticles] = useState<string | null>(null);
   const [errorPoems, setErrorPoems] = useState<string | null>(null);
 
-  const articleCategories = [
-    "All",
-    "AI/Tech",
-    "Research",
-    "Learning",
-    "Technology",
-  ];
+  const articleCategories = ["All", "Technology", "Research", "Learning"];
   const [activeCategory, setActiveCategory] = useState("All");
 
   useEffect(() => {
