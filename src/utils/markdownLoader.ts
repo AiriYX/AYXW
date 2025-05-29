@@ -1,6 +1,5 @@
 // src/utils/markdownLoader.ts
 
-// Define the type for the frontmatter data from your markdown files
 export type MarkdownFrontmatter = {
   title: string;
   date: string;
@@ -8,13 +7,9 @@ export type MarkdownFrontmatter = {
   readTime: string;
 };
 
-// Define the type for the module exported by vite-plugin-markdown
-// This tells TypeScript what to expect when importing a markdown file
 export type MarkdownModule = {
-  html: string; // The plugin provides the HTML content
-  frontmatter: MarkdownFrontmatter; // The plugin provides the parsed frontmatter
-  // You might also find 'raw' or 'default' depending on plugin config,
-  // but html and frontmatter are the main ones for this use case.
+  html: string;
+  attributes: MarkdownFrontmatter; // Changed to attributes based on previous discussion
 };
 
 export type BlogPostData = {
@@ -22,11 +17,9 @@ export type BlogPostData = {
   date: string;
   category: string;
   readTime: string;
-  content: string; // This will now be the HTML content
+  content: string;
 };
 
-// Use eager: true to import all modules immediately at build time
-// Tell TypeScript that the values in this record are MarkdownModule types
 const markdownModules: Record<string, MarkdownModule> = import.meta.glob(
   "../contents/blogs/*.md",
   { eager: true }
@@ -35,27 +28,61 @@ const markdownModules: Record<string, MarkdownModule> = import.meta.glob(
 export async function loadMarkdownPost(
   slug: string
 ): Promise<BlogPostData | null> {
+  console.log(`[loadMarkdownPost] received slug: ${slug}`); // New log
+
   const normalizedSlug = slug.toLowerCase();
+  const expectedPathEnd = `/blogs/${normalizedSlug}.md`; // Construct the expected path end
 
-  // Find the module based on the file name
-  for (const path in markdownModules) {
-    if (path.toLowerCase().endsWith(`/blogs/${normalizedSlug}.md`)) {
-      const module = markdownModules[path]; // Now `module` is correctly typed as `MarkdownModule`
+  console.log(`[loadMarkdownPost] normalized slug: ${normalizedSlug}`); // New log
+  console.log(`[loadMarkdownPost] expected path end: ${expectedPathEnd}`); // New log
+  console.log(
+    "[loadMarkdownPost] All markdown modules found by glob:",
+    Object.keys(markdownModules) // This is already there, but crucial!
+  );
 
-      // No more 'as any'! TypeScript now knows `module` has `html` and `frontmatter`
-      const postHtmlContent = module.html;
-      const frontmatter = module.frontmatter;
+  const entry = Object.entries(markdownModules).find(([path]) => {
+    const lowerCaseFullPath = path.toLowerCase();
+    const isMatch = lowerCaseFullPath.endsWith(expectedPathEnd);
+    console.log(
+      `[loadMarkdownPost] Checking path: ${path} (lower: ${lowerCaseFullPath}) against expected: ${expectedPathEnd} - Match: ${isMatch}`
+    ); // New log
+    return isMatch;
+  });
 
-      if (frontmatter && postHtmlContent) {
-        return {
-          title: frontmatter.title,
-          date: frontmatter.date,
-          category: frontmatter.category,
-          readTime: frontmatter.readTime,
-          content: postHtmlContent,
-        };
-      }
-    }
+  if (!entry) {
+    console.log("[loadMarkdownPost] No matching entry found for slug:", slug); // New log
+    return null;
   }
-  return null;
+
+  const importer = entry[1];
+
+  // The 'rawMarkdown' variable from previous discussion has been replaced by the plugin
+  // which provides 'html' and 'attributes' directly on the module.
+  const module = importer; // In eager mode, importer directly is the module.
+
+  const postHtmlContent = module.html;
+  const frontmatter = module.attributes;
+
+  if (frontmatter && postHtmlContent) {
+    console.log("[loadMarkdownPost] Successfully parsed post data:", {
+      title: frontmatter.title,
+      date: frontmatter.date,
+      category: frontmatter.category,
+      readTime: frontmatter.readTime,
+      content: "HTML content present (not logged in full)",
+    }); // New log
+    return {
+      title: frontmatter.title,
+      date: frontmatter.date,
+      category: frontmatter.category,
+      readTime: frontmatter.readTime,
+      content: postHtmlContent,
+    };
+  } else {
+    console.warn(
+      "[loadMarkdownPost] Post data or content missing after parsing for slug:",
+      slug
+    ); // New log
+    return null;
+  }
 }

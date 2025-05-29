@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { loadMarkdownPost, BlogPostData } from "@/utils/markdownLoader";
+import { format } from "date-fns";
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -109,7 +110,7 @@ const BlogPost = () => {
               >
                 <div className="flex items-center gap-1">
                   <Calendar size={14} />
-                  <span>{post.date}</span>
+                  <span>{format(new Date(post.date), "MMMM d, yyyy")}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock size={14} />

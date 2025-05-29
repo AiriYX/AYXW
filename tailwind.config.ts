@@ -1,5 +1,7 @@
+// airiyx/ayxw/AYXW-main/tailwind.config.ts
 import type { Config } from "tailwindcss";
 import animatePlugin from "tailwindcss-animate";
+import typography from "@tailwindcss/typography"; // Make sure to import the typography plugin
 
 export default {
   darkMode: ["class"],
@@ -19,13 +21,13 @@ export default {
       },
     },
     screens: {
-      'xxs': '320px',
-      'xs': '475px',
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
-      '2xl': '1536px',
+      xxs: "320px",
+      xs: "475px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
     },
     extend: {
       fontFamily: {
@@ -134,7 +136,32 @@ export default {
       backgroundColor: {
         DEFAULT: "var(--background, #fdfcfa)",
       },
+      // Add custom typography settings here
+      typography: ({ theme }) => ({
+        // You can target specific sizes or the default
+        DEFAULT: {
+          css: {
+            p: {
+              // Target paragraph elements
+              lineHeight: "1.625", // Adjust this value for 1.5 spacing. Tailwind's 'leading-relaxed' is 1.625.
+              // For exact 1.5, you can use '1.5' or '24px' if your base font is 16px.
+            },
+            // You can also customize other elements like h1, h2, ul, ol, etc.
+          },
+        },
+        lg: {
+          // If you're using prose-lg, you might want to customize it specifically
+          css: {
+            p: {
+              lineHeight: "1.625", // Ensure consistency if you override specific prose sizes
+            },
+          },
+        },
+      }),
     },
   },
-  plugins: [animatePlugin],
+  plugins: [
+    animatePlugin,
+    typography, // Make sure the typography plugin is enabled here
+  ],
 } satisfies Config;
