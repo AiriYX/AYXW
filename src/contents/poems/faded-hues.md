@@ -1,9 +1,9 @@
 ---
 title: Faded Hues
-date: December 2024
-mood: Contemplative
-pdfUrl: /poems/faded-hues.pdf # Path relative to public folder
-featured: true # Mark as featured
+date: 2024-12-01 # YYYY-MM-DD for sorting
+mood: Contemplative # Single string for mood
+pdfUrl: /poems/faded-hues.pdf
+featured: true
 ---
 
 as a silent ache grows,

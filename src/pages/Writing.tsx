@@ -6,14 +6,14 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 import WritingPageHeader from "@/components/writing/WritingPageHeader";
 import ArticleList from "@/components/writing/ArticleList";
-import PoetrySection from "@/components/writing/PoetrySection";
+import PoetrySection from "@/components/writing/PoetrySection"; // Ensure this import is correct
 
 export type MarkdownFrontmatter = {
   title: string;
   date: string;
-  category?: string | string[]; // Changed to allow string or array of strings
+  category?: string | string[];
   readTime?: string;
-  mood?: string;
+  mood?: string; // mood is specific to poems
   pdfUrl?: string;
   featured?: boolean;
 };
@@ -28,7 +28,7 @@ export type BlogPostOverviewData = {
   excerpt: string;
   date: string;
   readTime: string;
-  category: string[]; // This will always be an array after loading
+  category: string[];
   slug: string;
   number: string;
 };
@@ -48,14 +48,12 @@ const Writing = () => {
   const navigate = useNavigate();
 
   const [blogPosts, setBlogPosts] = useState<BlogPostOverviewData[]>([]);
-  const [poems, setPoems] = useState<PoemOverviewData[]>([]);
+  const [poems, setPoems] = useState<PoemOverviewData[]>([]); // This will contain all poems loaded
   const [loadingArticles, setLoadingArticles] = useState(true);
   const [loadingPoems, setLoadingPoems] = useState(true);
   const [errorArticles, setErrorArticles] = useState<string | null>(null);
   const [errorPoems, setErrorPoems] = useState<string | null>(null);
 
-  // Categories for articles. Update these if your markdown files use different categories.
-  // Note: These should be ALL unique categories you want to filter by, even if they are within an array in MD.
   const articleCategories = [
     "All",
     "AI/Tech",
@@ -63,10 +61,24 @@ const Writing = () => {
     "Learning",
     "Technology",
   ];
-  const [activeCategories, setActiveCategories] = useState<string[]>(["All"]);
+  const [activeArticleCategories, setActiveArticleCategories] = useState<
+    string[]
+  >(["All"]); // Renamed for clarity
 
-  const toggleCategory = (category: string) => {
-    setActiveCategories((prevCategories) => {
+  // New state for poetry filters
+  const poemMoods = [
+    "All",
+    "Contemplative",
+    "Nostalgic",
+    "Introspective",
+    "Hopeful",
+    "Philosophical",
+  ]; // Example moods, update as needed
+  const [activePoemMoods, setActivePoemMoods] = useState<string[]>(["All"]);
+
+  // Toggle function for Article Categories
+  const toggleArticleCategory = (category: string) => {
+    setActiveArticleCategories((prevCategories) => {
       if (category === "All") {
         return ["All"];
       } else {
@@ -79,6 +91,24 @@ const Writing = () => {
           return newCategories.length === 0 ? ["All"] : newCategories;
         } else {
           return [...updatedCategories, category];
+        }
+      }
+    });
+  };
+
+  // New toggle function for Poem Moods
+  const togglePoemMood = (mood: string) => {
+    setActivePoemMoods((prevMoods) => {
+      if (mood === "All") {
+        return ["All"];
+      } else {
+        const updatedMoods = prevMoods.filter((m) => m !== "All");
+
+        if (updatedMoods.includes(mood)) {
+          const newMoods = updatedMoods.filter((m) => m !== mood);
+          return newMoods.length === 0 ? ["All"] : newMoods;
+        } else {
+          return [...updatedMoods, mood];
         }
       }
     });
@@ -99,7 +129,6 @@ const Writing = () => {
           const frontmatter = module.attributes;
           const content = module.html;
 
-          // Ensure category is always an array
           const categoryArray = Array.isArray(frontmatter.category)
             ? frontmatter.category
             : typeof frontmatter.category === "string"
@@ -115,7 +144,7 @@ const Writing = () => {
             excerpt: excerpt,
             date: frontmatter.date,
             readTime: frontmatter.readTime || "N/A",
-            category: categoryArray, // Assign the array
+            category: categoryArray,
             slug: slug,
             number: "",
           };
@@ -165,11 +194,12 @@ const Writing = () => {
           }
         );
 
+        // The sorting by date happens here for all loaded poems
         loadedPoems.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
 
-        setPoems(loadedPoems);
+        setPoems(loadedPoems); // All poems are now loaded and sorted here
       } catch (err) {
         console.error("Failed to load poems:", err);
         setErrorPoems("Failed to load poems.");
@@ -182,14 +212,15 @@ const Writing = () => {
     loadPoetry();
   }, []);
 
-  // Filtering logic updated to support multiple categories (intersection)
+  // Filtering logic for Articles (no change here, still activeCategories)
   const postsToDisplay = useMemo(() => {
     let currentPosts = blogPosts;
 
-    if (!activeCategories.includes("All")) {
-      // Filter: an article is included if ALL activeCategories are present in its own category array
+    if (!activeArticleCategories.includes("All")) {
       currentPosts = blogPosts.filter((post) =>
-        activeCategories.every((activeCat) => post.category.includes(activeCat))
+        activeArticleCategories.every((activeCat) =>
+          post.category.includes(activeCat)
+        )
       );
     }
 
@@ -197,7 +228,30 @@ const Writing = () => {
       ...post,
       number: String(index + 1).padStart(2, "0"),
     }));
-  }, [blogPosts, activeCategories]);
+  }, [blogPosts, activeArticleCategories]);
+
+  // New filtering logic for Poems
+  const poemsToDisplay = useMemo(() => {
+    let currentPoems = poems; // Use the 'poems' state which contains all sorted poems
+
+    // Filter by 'featured' status if not "All" moods are selected, or if you want to always show only featured.
+    // Based on previous discussion, if no filter is applied, only featured poems were shown.
+    // Now, if "All" is selected, show all poems. Otherwise, filter by mood.
+    if (!activePoemMoods.includes("All")) {
+      currentPoems = currentPoems.filter(
+        (poem) => activePoemMoods.some((activeMood) => poem.mood === activeMood) // Assuming mood is a single string for now
+      );
+    }
+
+    // You might also want to re-apply featured filter if it's a global requirement
+    // For now, I'll assume that if a mood filter is active, it takes precedence.
+    // If "All" is selected, it shows all poems (featured and non-featured).
+    // If a specific mood is selected, it shows all poems of that mood.
+    // If you explicitly want ONLY featured poems to ever show, add a .filter(poem => poem.featured) here.
+    // Example: currentPoems = currentPoems.filter(poem => poem.featured && activePoemMoods.some(...));
+
+    return currentPoems; // Return the filtered (and already sorted) poems
+  }, [poems, activePoemMoods]);
 
   if (loadingArticles || loadingPoems) {
     return (
@@ -241,11 +295,16 @@ const Writing = () => {
           <ArticleList
             filteredPosts={postsToDisplay}
             articleCategories={articleCategories}
-            activeCategories={activeCategories}
-            toggleCategory={toggleCategory}
+            activeCategories={activeArticleCategories}
+            toggleCategory={toggleArticleCategory}
           />
 
-          <PoetrySection poems={poems} />
+          <PoetrySection // Pass new props for filtering
+            poems={poemsToDisplay} // Pass the newly filtered poems
+            poemMoods={poemMoods}
+            activePoemMoods={activePoemMoods}
+            togglePoemMood={togglePoemMood}
+          />
         </div>
       </div>
     </div>
