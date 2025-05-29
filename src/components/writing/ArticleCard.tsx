@@ -45,12 +45,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ post }) => {
 
             {/* Display categories as separate pills */}
             <div className="flex items-center space-x-2 mb-4">
-              {" "}
-              {/* Added a div for flex container */}
               {Array.isArray(post.category) ? (
                 post.category.map((categoryItem, index) => (
                   <span
-                    key={index} // Key is important when mapping
+                    key={index}
                     className={`px-3 py-1 rounded-full text-xs font-medium ${
                       theme === "dark"
                         ? "bg-fuchsia-300/20 text-fuchsia-300"
@@ -74,8 +72,6 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ post }) => {
             </div>
 
             <div className="flex items-center space-x-4 mb-4">
-              {" "}
-              {/* This was the original containing div for date/readTime */}
               <div
                 className={`flex items-center space-x-4 text-sm ${
                   theme === "dark" ? "text-neutral-400" : "text-neutral-500"
@@ -83,7 +79,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ post }) => {
               >
                 <div className="flex items-center space-x-1">
                   <Calendar size={14} />
-                  <span>{format(new Date(post.date), "MMMM d,PPPP")}</span>
+                  {/* Corrected format string: 'MMMM d, yyyy' */}
+                  <span>{format(new Date(post.date), "MMMM d, yyyy")}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock size={14} />
