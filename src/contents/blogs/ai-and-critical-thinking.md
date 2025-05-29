@@ -1,6 +1,6 @@
 ---
 title: Can AI Teach Students to Think? The Quest for Critical Thinking in a World of Instant Answers.
-date: 2024-05-01
+date: 2025-05-02
 category: Technology
 readTime: 10 min read
 ---

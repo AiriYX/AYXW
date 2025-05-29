@@ -1,6 +1,6 @@
 ---
 title: Building My First Finder App with Google API - A Learning Journey
-date: 2024-05-29 # Use today's date or the date you intend to publish
+date: 2025-05-16 # Use today's date or the date you intend to publish
 category: Learning
 readTime: 7 min read # Estimate based on content length
 ---

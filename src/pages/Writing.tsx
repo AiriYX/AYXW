@@ -13,7 +13,7 @@ const Writing = () => {
         "Can AI Teach Students to Think? The Quest for Critical Thinking in a World of Instant Answers.",
       excerpt:
         "In the world of AI, are we using it to benefit ourselves, that makes us dumber or boosting our intelligence?",
-      date: "May 1, 2024",
+      date: "May 2025",
       readTime: "12 min read",
       category: "AI/Tech",
       slug: "ai-and-critical-thinking",
@@ -23,7 +23,7 @@ const Writing = () => {
       title: "Loving spice? Here may be a reason why.",
       excerpt:
         "Wondered why you like spicy food so much? Truth may tell you deeper about your personality.",
-      date: "April, 2024",
+      date: "June 2024",
       readTime: "8 min read",
       category: "Research",
       slug: "loving-spice",
@@ -32,7 +32,7 @@ const Writing = () => {
     {
       title: "Creating a finder app with Google API",
       excerpt: "Documentation on creating a community based web-app/ios app.",
-      date: "May, 2025",
+      date: "May 2025",
       readTime: "4 min read",
       category: "Learning",
       slug: "finder-howto",

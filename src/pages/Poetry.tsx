@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart } from "lucide-react";
@@ -65,32 +64,10 @@ Of being small beneath the vast sky.`,
     },
     "digital-solitude": {
       title: "Digital Solitude",
-      content: `In the space between keystrokes, I find myself
-Suspended in the blue glow of screens,
-Where silence is measured in milliseconds
-And connection comes through fiber optic dreams.
-
-The cursor blinks like a digital heartbeat,
-Waiting for words that capture the ineffable—
-How do we love in an age of algorithms?
-How do we touch through walls of glass?
-
-My fingers dance across keys worn smooth
-By countless conversations, confessions, and code.
-Each tap a tiny prayer sent into the void,
-Each message a bottle thrown into digital seas.
-
-Yet in this networked isolation,
-I discover a paradox of modern being:
-Never have we been more connected,
-Never have we felt more alone.
-
-But perhaps solitude isn't the absence of others—
-Perhaps it's the presence of self,
-Found in the quiet moments between notifications,
-In the pause before we hit send.`,
+      content: ``,
       date: "January 2024",
-      mood: "Introspective",
+      mood: "Melchondly",
+      pdf_link: "",
     },
     "autumns-code": {
       title: "Autumn's Code",
@@ -205,7 +182,9 @@ Will bloom in tomorrow's conversations.`,
           <header className="mb-8 text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Heart
-                className={`${theme === "dark" ? "text-rose-400" : "text-rose-600"}`}
+                className={`${
+                  theme === "dark" ? "text-rose-400" : "text-rose-600"
+                }`}
                 size={24}
               />
               <span
@@ -218,7 +197,9 @@ Will bloom in tomorrow's conversations.`,
                 {poem.mood}
               </span>
               <Heart
-                className={`${theme === "dark" ? "text-rose-400" : "text-rose-600"}`}
+                className={`${
+                  theme === "dark" ? "text-rose-400" : "text-rose-600"
+                }`}
                 size={24}
               />
             </div>

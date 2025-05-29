@@ -1,6 +1,6 @@
 ---
 title: Mmm, Spice! Unpacking Why We Love the Burn
-date: 2020-05-08
+date: 2024-06-07
 category: Research
 readTime: 8 min read
 ---
