@@ -1,10 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-// Change this line:
-// import Markdown from "vite-plugin-markdown";
-// To this:
-import vitePluginMarkdown from "vite-plugin-markdown"; // Use default import
+// Corrected import: Use named import for 'plugin' and 'Mode'
+import { plugin as markdownPlugin, Mode } from "vite-plugin-markdown";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -14,12 +12,15 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    vitePluginMarkdown(), // Call the named import function
+    // Call the aliased plugin function and specify the modes you need
+    markdownPlugin({
+      mode: [Mode.HTML, Mode.MARKDOWN], // Explicitly request HTML and Markdown content
+    }),
   ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  // You can remove this line if it's still there: assetsInclude: ["**/*.md"],
+  // You can remove this line: assetsInclude: ["**/*.md"],
 }));
