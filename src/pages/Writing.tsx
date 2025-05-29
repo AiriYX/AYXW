@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react"; // Import useMemo
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 
@@ -11,7 +11,7 @@ import PoetrySection from "@/components/writing/PoetrySection";
 export type MarkdownFrontmatter = {
   title: string;
   date: string;
-  category?: string;
+  category?: string | string[]; // Changed to allow string or array of strings
   readTime?: string;
   mood?: string;
   pdfUrl?: string;
@@ -28,9 +28,9 @@ export type BlogPostOverviewData = {
   excerpt: string;
   date: string;
   readTime: string;
-  category: string;
+  category: string[]; // This will always be an array after loading
   slug: string;
-  number: string; // This will now be assigned dynamically in filteredPosts
+  number: string;
 };
 
 export type PoemOverviewData = {
@@ -54,6 +54,8 @@ const Writing = () => {
   const [errorArticles, setErrorArticles] = useState<string | null>(null);
   const [errorPoems, setErrorPoems] = useState<string | null>(null);
 
+  // Categories for articles. Update these if your markdown files use different categories.
+  // Note: These should be ALL unique categories you want to filter by, even if they are within an array in MD.
   const articleCategories = [
     "All",
     "AI/Tech",
@@ -92,11 +94,17 @@ const Writing = () => {
         const loadedPosts: BlogPostOverviewData[] = Object.entries(
           markdownModules
         ).map(([path, module]) => {
-          // Removed index here
           const slug =
             path.split("/").pop()?.replace(/\.md$/, "") || `post-slug`;
           const frontmatter = module.attributes;
           const content = module.html;
+
+          // Ensure category is always an array
+          const categoryArray = Array.isArray(frontmatter.category)
+            ? frontmatter.category
+            : typeof frontmatter.category === "string"
+            ? [frontmatter.category]
+            : ["Uncategorized"];
 
           const excerpt = content
             ? content.replace(/<[^>]*>/g, "").substring(0, 150) + "..."
@@ -107,13 +115,12 @@ const Writing = () => {
             excerpt: excerpt,
             date: frontmatter.date,
             readTime: frontmatter.readTime || "N/A",
-            category: frontmatter.category || "Uncategorized",
+            category: categoryArray, // Assign the array
             slug: slug,
-            number: "", // Temporarily set to empty string, will be assigned later
+            number: "",
           };
         });
 
-        // Sort all loaded posts by date (newest first)
         loadedPosts.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
@@ -175,18 +182,17 @@ const Writing = () => {
     loadPoetry();
   }, []);
 
-  // Use useMemo to re-calculate filteredPosts only when blogPosts or activeCategories change
+  // Filtering logic updated to support multiple categories (intersection)
   const postsToDisplay = useMemo(() => {
     let currentPosts = blogPosts;
 
-    // Apply category filtering
     if (!activeCategories.includes("All")) {
+      // Filter: an article is included if ALL activeCategories are present in its own category array
       currentPosts = blogPosts.filter((post) =>
-        activeCategories.some((cat) => post.category === cat)
+        activeCategories.every((activeCat) => post.category.includes(activeCat))
       );
     }
 
-    // Assign sequential numbers AFTER filtering and sorting
     return currentPosts.map((post, index) => ({
       ...post,
       number: String(index + 1).padStart(2, "0"),
@@ -233,7 +239,7 @@ const Writing = () => {
           <WritingPageHeader />
 
           <ArticleList
-            filteredPosts={postsToDisplay} // Pass the newly calculated postsToDisplay
+            filteredPosts={postsToDisplay}
             articleCategories={articleCategories}
             activeCategories={activeCategories}
             toggleCategory={toggleCategory}

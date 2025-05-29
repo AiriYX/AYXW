@@ -1,11 +1,10 @@
 // src/components/writing/ArticleCard.tsx
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
-import { format } from "date-fns"; // Make sure date-fns is installed and imported
-import { BlogPostOverviewData } from "@/pages/Writing"; // Import the type from Writing.tsx
+import { format } from "date-fns";
+import { BlogPostOverviewData } from "@/pages/Writing";
 
 interface ArticleCardProps {
   post: BlogPostOverviewData;
@@ -44,17 +43,39 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ post }) => {
               {post.title}
             </h2>
 
-            <div className="flex items-center space-x-4 mb-4">
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  theme === "dark"
-                    ? "bg-fuchsia-300/20 text-fuchsia-300"
-                    : "bg-fuchsia-200 text-fuchsia-600"
-                }`}
-              >
-                {post.category}
-              </span>
+            {/* Display categories as separate pills */}
+            <div className="flex items-center space-x-2 mb-4">
+              {" "}
+              {/* Added a div for flex container */}
+              {Array.isArray(post.category) ? (
+                post.category.map((categoryItem, index) => (
+                  <span
+                    key={index} // Key is important when mapping
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      theme === "dark"
+                        ? "bg-fuchsia-300/20 text-fuchsia-300"
+                        : "bg-fuchsia-200 text-fuchsia-600"
+                    }`}
+                  >
+                    {categoryItem}
+                  </span>
+                ))
+              ) : (
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    theme === "dark"
+                      ? "bg-fuchsia-300/20 text-fuchsia-300"
+                      : "bg-fuchsia-200 text-fuchsia-600"
+                  }`}
+                >
+                  {post.category}
+                </span>
+              )}
+            </div>
 
+            <div className="flex items-center space-x-4 mb-4">
+              {" "}
+              {/* This was the original containing div for date/readTime */}
               <div
                 className={`flex items-center space-x-4 text-sm ${
                   theme === "dark" ? "text-neutral-400" : "text-neutral-500"
@@ -62,8 +83,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ post }) => {
               >
                 <div className="flex items-center space-x-1">
                   <Calendar size={14} />
-                  {/* Change the format string here */}
-                  <span>{format(new Date(post.date), "MMMM d, yyyy")}</span>
+                  <span>{format(new Date(post.date), "MMMM d,PPPP")}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock size={14} />
