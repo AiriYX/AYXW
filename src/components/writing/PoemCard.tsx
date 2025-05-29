@@ -1,9 +1,11 @@
 // src/components/writing/PoemCard.tsx
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { BookOpen, Heart, ArrowRight } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
-import { PoemOverviewData } from "@/pages/Writing"; // Import the type from Writing.tsx
+import { format } from "date-fns"; // Make sure date-fns is imported
+import { PoemOverviewData } from "@/pages/Writing";
 
 interface PoemCardProps {
   poem: PoemOverviewData;
@@ -18,9 +20,9 @@ const PoemCard: React.FC<PoemCardProps> = ({ poem }) => {
       key={poem.slug}
       onClick={() => {
         if (poem.pdfUrl) {
-          window.open(poem.pdfUrl, "_blank"); // Open PDF in new tab
+          window.open(poem.pdfUrl, "_blank");
         } else {
-          navigate(`/writing/poetry/${poem.slug}`); // Navigate to Markdown page
+          navigate(`/writing/poetry/${poem.slug}`);
         }
       }}
       className={`flex-shrink-0 w-80 p-6 rounded-2xl cursor-pointer transition-all duration-300 hover:scale-105 ${
@@ -34,8 +36,8 @@ const PoemCard: React.FC<PoemCardProps> = ({ poem }) => {
           <span
             className={`text-xs px-2 py-1 rounded-full ${
               theme === "dark"
-                ? "bg-fuchsia-300/20 text-fuchsia-300"
-                : "bg-fuchsia-200 text-fuchsia-600"
+                ? "bg-rose-300/20 text-rose-300"
+                : "bg-rose-200 text-rose-600"
             }`}
           >
             {poem.mood}
@@ -45,7 +47,8 @@ const PoemCard: React.FC<PoemCardProps> = ({ poem }) => {
               theme === "dark" ? "text-neutral-500" : "text-neutral-400"
             }`}
           >
-            {poem.date}
+            {/* Corrected format string: 'MMMM d, yyyy' */}
+            <span>{format(new Date(poem.date), "MMMM d, yyyy")}</span>
           </span>
         </div>
         <h3
@@ -68,12 +71,11 @@ const PoemCard: React.FC<PoemCardProps> = ({ poem }) => {
       <div
         className={`flex items-center gap-2 text-sm transition-colors duration-200 ${
           theme === "dark"
-            ? "text-fuchsia-400 hover:text-white"
-            : "text-fuchsia-600 hover:text-rose-500"
+            ? "text-rose-400 hover:text-white"
+            : "text-rose-600 hover:text-rose-500"
         }`}
       >
         <BookOpen size={14} />
-        {/* Change button text based on PDF availability */}
         <span>{poem.pdfUrl ? "Open PDF" : "Read poem"}</span>
         <ArrowRight
           size={14}

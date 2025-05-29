@@ -1,6 +1,6 @@
 ---
 title: The Seasons
-date: March 2025
+date: 2025-03-12
 mood: Contemplative
 pdfUrl: /poems/the-seasons.pdf # Path relative to public folder
 featured: true # Mark as featured

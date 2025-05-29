@@ -99,7 +99,7 @@ const Navigation = () => {
               className={`p-2 rounded-lg transition-colors duration-200 ${
                 theme === "dark"
                   ? "text-pink-400 hover:bg-neutral-800 hover:text-pink-300"
-                  : "text-fuchsia-600 hover:bg-pink-600/10 hover:text-fuchsia-600"
+                  : "text-pink-600 hover:bg-pink-600/10 hover:text-pink-600"
               }`}
             >
               {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}

@@ -52,7 +52,6 @@ const PoetrySection: React.FC<PoetrySectionProps> = ({
           Words that flow from the heart
         </p>
       </div>
-
       {/* New: Mood filter pills for Poetry */}
       <div className="flex justify-center mb-8">
         <div
@@ -81,9 +80,23 @@ const PoetrySection: React.FC<PoetrySectionProps> = ({
           ))}
         </div>
       </div>
-
       {/* Horizontal Poetry Scroll */}
-      <div className="overflow-x-auto pb-4">
+      <div
+        className={`
+          overflow-x-auto pb-4
+          scrollbar-thin
+          scrollbar-thumb-pink-400
+          scrollbar-track-zinc-900
+          dark:scrollbar-thumb-pink-300
+          dark:scrollbar-track-zinc-800
+        `}
+        style={{
+          // fallback for browsers not supporting tailwind-scrollbar
+          scrollbarColor:
+            theme === "dark" ? "#fb7185 #27272a" : "#f43f5e #f3f4f6",
+          scrollbarWidth: "thin",
+        }}
+      >
         <div className="flex gap-6 min-w-max">
           {poems.length === 0 && (
             <div
@@ -99,6 +112,7 @@ const PoetrySection: React.FC<PoetrySectionProps> = ({
           ))}
         </div>
       </div>
+      ›
     </div>
   );
 };

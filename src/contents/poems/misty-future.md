@@ -1,6 +1,6 @@
 ---
 title: Mist Among Time
-date: January 2024
+date: 2024-02-03
 mood: Introspective
 # No pdfUrl or featured: true, so it will render Markdown
 ---
