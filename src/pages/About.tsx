@@ -80,7 +80,9 @@ const About = () => {
               >
                 Hey there!{" "}
                 <span
-                  className={`${theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-600"}`}
+                  className={`${
+                    theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-600"
+                  }`}
                 >
                   You made it!
                 </span>
@@ -103,10 +105,18 @@ const About = () => {
               <div className="flex justify-center">
                 <div className="relative">
                   <div
-                    className={`relative p-2 rounded-full ${theme === "dark" ? "bg-gradient-to-br from-fuchsia-400/30 to-rose-400/30 shadow-lg" : "bg-gradient-to-br from-rose-200/70 to-pink-200/70 shadow-xl"}`}
+                    className={`relative p-2 rounded-full ${
+                      theme === "dark"
+                        ? "bg-gradient-to-br from-fuchsia-400/30 to-rose-400/30 shadow-lg"
+                        : "bg-gradient-to-br from-rose-200/70 to-pink-200/70 shadow-xl"
+                    }`}
                   >
                     <div
-                      className={`w-64 h-64 rounded-full overflow-hidden border-4 ${theme === "dark" ? "border-neutral-700/50 shadow-inner" : "border-white/80 shadow-inner"}`}
+                      className={`w-64 h-64 rounded-full overflow-hidden border-4 ${
+                        theme === "dark"
+                          ? "border-neutral-700/50 shadow-inner"
+                          : "border-white/80 shadow-inner"
+                      }`}
                     >
                       <img
                         src={meMylo}
@@ -118,30 +128,40 @@ const About = () => {
 
                   {/* Decorative elements around the frame */}
                   <div
-                    className={`absolute -top-3 left-1/2 transform -translate-x-1/2 text-2xl animate-pulse ${theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-600"}`}
+                    className={`absolute -top-3 left-1/2 transform -translate-x-1/2 text-2xl animate-pulse ${
+                      theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-600"
+                    }`}
                   >
                     ✨
                   </div>
                   <div
-                    className={`absolute top-8 -right-4 text-xl animate-bounce ${theme === "dark" ? "text-pink-400" : "text-pink-500"}`}
+                    className={`absolute top-8 -right-4 text-xl animate-bounce ${
+                      theme === "dark" ? "text-pink-400" : "text-pink-500"
+                    }`}
                     style={{ animationDelay: "0.5s" }}
                   >
                     💖
                   </div>
                   <div
-                    className={`absolute top-12 -left-4 text-lg animate-spin ${theme === "dark" ? "text-yellow-400" : "text-yellow-500"}`}
+                    className={`absolute top-12 -left-4 text-lg animate-spin ${
+                      theme === "dark" ? "text-yellow-400" : "text-yellow-500"
+                    }`}
                     style={{ animationDuration: "3s" }}
                   >
                     ⭐
                   </div>
                   <div
-                    className={`absolute bottom-4 -right-2 text-lg animate-pulse ${theme === "dark" ? "text-pink-400" : "text-pink-400"}`}
+                    className={`absolute bottom-4 -right-2 text-lg animate-pulse ${
+                      theme === "dark" ? "text-pink-400" : "text-pink-400"
+                    }`}
                     style={{ animationDelay: "1s" }}
                   >
                     🌸
                   </div>
                   <div
-                    className={`absolute bottom-8 -left-3 text-base animate-bounce ${theme === "dark" ? "text-blue-400" : "text-blue-500"}`}
+                    className={`absolute bottom-8 -left-3 text-base animate-bounce ${
+                      theme === "dark" ? "text-blue-400" : "text-blue-500"
+                    }`}
                     style={{ animationDelay: "1.5s", animationDuration: "2s" }}
                   >
                     🪐
@@ -152,7 +172,9 @@ const About = () => {
               {/* Photography Portfolio Grid */}
               <div>
                 <h3
-                  className={`text-xl font-serif font-semibold mb-4 text-center lg:text-left ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+                  className={`text-xl font-serif font-semibold mb-4 text-center lg:text-left ${
+                    theme === "dark" ? "text-neutral-100" : "text-neutral-800"
+                  }`}
                 >
                   Photography Portfolio
                 </h3>
@@ -160,7 +182,11 @@ const About = () => {
                   {photo.map((photo) => (
                     <div
                       key={photo.id}
-                      className={`aspect-square rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 ${theme === "dark" ? "bg-neutral-800 border border-neutral-700" : "bg-neutral-100 border border-neutral-200"}`}
+                      className={`aspect-square rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 ${
+                        theme === "dark"
+                          ? "bg-neutral-800 border border-neutral-700"
+                          : "bg-neutral-100 border border-neutral-200"
+                      }`}
                     >
                       <img
                         src={photo.url}
@@ -177,27 +203,45 @@ const About = () => {
             <div className="space-y-8">
               <div>
                 <h2
-                  className={`text-2xl font-serif font-semibold mb-6 ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+                  className={`text-2xl font-serif font-semibold mb-6 ${
+                    theme === "dark" ? "text-neutral-100" : "text-neutral-800"
+                  }`}
                 >
                   Get In Touch
                 </h2>
 
                 <div
-                  className={`p-6 rounded-2xl mb-8 backdrop-blur-sm ${theme === "dark" ? "bg-neutral-800/50 border border-neutral-700/50" : "bg-white/60 border border-rose-200/40 shadow-lg"}`}
+                  className={`p-6 rounded-2xl mb-8 backdrop-blur-sm ${
+                    theme === "dark"
+                      ? "bg-neutral-800/50 border border-neutral-700/50"
+                      : "bg-white/60 border border-rose-200/40 shadow-lg"
+                  }`}
                 >
                   <div className="flex items-start space-x-4 mb-6">
                     <MessageCircle
-                      className={`mt-1 ${theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-600"}`}
+                      className={`mt-1 ${
+                        theme === "dark"
+                          ? "text-fuchsia-400"
+                          : "text-fuchsia-600"
+                      }`}
                       size={24}
                     />
                     <div>
                       <h3
-                        className={`font-semibold mb-2 ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+                        className={`font-semibold mb-2 ${
+                          theme === "dark"
+                            ? "text-neutral-100"
+                            : "text-neutral-800"
+                        }`}
                       >
                         Open to Opportunities
                       </h3>
                       <p
-                        className={`font-light ${theme === "dark" ? "text-neutral-300" : "text-neutral-600"}`}
+                        className={`font-light ${
+                          theme === "dark"
+                            ? "text-neutral-300"
+                            : "text-neutral-600"
+                        }`}
                       >
                         I'm currently looking for summer 2026 - 2027 (anytime in
                         between) internships in software engineering, full-stack
@@ -208,17 +252,29 @@ const About = () => {
 
                   <div className="flex items-start space-x-4">
                     <MapPin
-                      className={`mt-1 ${theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-600"}`}
+                      className={`mt-1 ${
+                        theme === "dark"
+                          ? "text-fuchsia-400"
+                          : "text-fuchsia-600"
+                      }`}
                       size={24}
                     />
                     <div>
                       <h3
-                        className={`font-semibold mb-2 ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+                        className={`font-semibold mb-2 ${
+                          theme === "dark"
+                            ? "text-neutral-100"
+                            : "text-neutral-800"
+                        }`}
                       >
                         Location
                       </h3>
                       <p
-                        className={`font-light ${theme === "dark" ? "text-neutral-300" : "text-neutral-600"}`}
+                        className={`font-light ${
+                          theme === "dark"
+                            ? "text-neutral-300"
+                            : "text-neutral-600"
+                        }`}
                       >
                         NYC Metropolitan Area, NY
                         <br />
@@ -234,7 +290,9 @@ const About = () => {
               {/* Social Links */}
               <div>
                 <h2
-                  className={`text-2xl font-serif font-semibold mb-6 ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+                  className={`text-2xl font-serif font-semibold mb-6 ${
+                    theme === "dark" ? "text-neutral-100" : "text-neutral-800"
+                  }`}
                 >
                   Find Me Online
                 </h2>
@@ -246,21 +304,37 @@ const About = () => {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`group flex items-center space-x-4 p-6 rounded-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm ${theme === "dark" ? "bg-neutral-800/50 border border-neutral-700/50 hover:bg-neutral-800" : "bg-white/60 border border-rose-200/40 shadow-lg hover:shadow-xl"}`}
+                      className={`group flex items-center space-x-4 p-6 rounded-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm ${
+                        theme === "dark"
+                          ? "bg-neutral-800/50 border border-neutral-700/50 hover:bg-neutral-800"
+                          : "bg-white/60 border border-rose-200/40 shadow-lg hover:shadow-xl"
+                      }`}
                     >
                       <div
-                        className={`transition-colors duration-200 ${theme === "dark" ? "text-neutral-400" : "text-neutral-500"} ${link.color}`}
+                        className={`transition-colors duration-200 ${
+                          theme === "dark"
+                            ? "text-neutral-400"
+                            : "text-neutral-500"
+                        } ${link.color}`}
                       >
                         {link.icon}
                       </div>
                       <div>
                         <h3
-                          className={`font-semibold ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+                          className={`font-semibold ${
+                            theme === "dark"
+                              ? "text-neutral-100"
+                              : "text-neutral-800"
+                          }`}
                         >
                           {link.name}
                         </h3>
                         <p
-                          className={`font-light ${theme === "dark" ? "text-neutral-300" : "text-neutral-600"}`}
+                          className={`font-light ${
+                            theme === "dark"
+                              ? "text-neutral-300"
+                              : "text-neutral-600"
+                          }`}
                         >
                           {link.username}
                         </p>
@@ -278,15 +352,23 @@ const About = () => {
           <div className="space-y-8">
             {/* Journey section */}
             <div
-              className={`p-8 rounded-2xl backdrop-blur-sm ${theme === "dark" ? "bg-neutral-800/40 border border-neutral-700/30" : "bg-white/60 border border-neutral-200/40 shadow-lg"}`}
+              className={`p-8 rounded-2xl backdrop-blur-sm ${
+                theme === "dark"
+                  ? "bg-neutral-800/40 border border-neutral-700/30"
+                  : "bg-white/60 border border-neutral-200/40 shadow-lg"
+              }`}
             >
               <h2
-                className={`text-2xl font-serif font-semibold mb-6 ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+                className={`text-2xl font-serif font-semibold mb-6 ${
+                  theme === "dark" ? "text-neutral-100" : "text-neutral-800"
+                }`}
               >
                 My Journey
               </h2>
               <div
-                className={`space-y-4 text-lg leading-relaxed font-light ${theme === "dark" ? "text-neutral-300" : "text-neutral-600"}`}
+                className={`space-y-4 text-lg leading-relaxed font-light ${
+                  theme === "dark" ? "text-neutral-300" : "text-neutral-600"
+                }`}
               >
                 <p>
                   I'm an upper Junior at City College of New York studying
@@ -314,15 +396,23 @@ const About = () => {
             {/* Two column layout for remaining content */}
             <div className="grid md:grid-cols-2 gap-8">
               <div
-                className={`p-6 rounded-2xl backdrop-blur-sm ${theme === "dark" ? "bg-neutral-800/40 border border-neutral-700/30" : "bg-white/60 border border-neutral-200/40 shadow-lg"}`}
+                className={`p-6 rounded-2xl backdrop-blur-sm ${
+                  theme === "dark"
+                    ? "bg-neutral-800/40 border border-neutral-700/30"
+                    : "bg-white/60 border border-neutral-200/40 shadow-lg"
+                }`}
               >
                 <h3
-                  className={`text-xl font-serif font-semibold mb-4 ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+                  className={`text-xl font-serif font-semibold mb-4 ${
+                    theme === "dark" ? "text-neutral-100" : "text-neutral-800"
+                  }`}
                 >
                   Quick Facts
                 </h3>
                 <div
-                  className={`space-y-3 font-light ${theme === "dark" ? "text-neutral-300" : "text-neutral-600"}`}
+                  className={`space-y-3 font-light ${
+                    theme === "dark" ? "text-neutral-300" : "text-neutral-600"
+                  }`}
                 >
                   <div className="flex items-center space-x-3">
                     <GraduationCap
@@ -347,10 +437,16 @@ const About = () => {
               </div>
 
               <div
-                className={`p-6 rounded-2xl backdrop-blur-sm ${theme === "dark" ? "bg-neutral-800/40 border border-neutral-700/30" : "bg-white/60 border border-neutral-200/40 shadow-lg"}`}
+                className={`p-6 rounded-2xl backdrop-blur-sm ${
+                  theme === "dark"
+                    ? "bg-neutral-800/40 border border-neutral-700/30"
+                    : "bg-white/60 border border-neutral-200/40 shadow-lg"
+                }`}
               >
                 <h3
-                  className={`text-xl font-serif font-semibold mb-4 ${theme === "dark" ? "text-neutral-100" : "text-neutral-800"}`}
+                  className={`text-xl font-serif font-semibold mb-4 ${
+                    theme === "dark" ? "text-neutral-100" : "text-neutral-800"
+                  }`}
                 >
                   When I'm Not Coding
                 </h3>
@@ -358,7 +454,11 @@ const About = () => {
                   {interests.map((interest, index) => (
                     <div
                       key={index}
-                      className={`flex items-center space-x-3 font-light ${theme === "dark" ? "text-neutral-300" : "text-neutral-600"}`}
+                      className={`flex items-center space-x-3 font-light ${
+                        theme === "dark"
+                          ? "text-neutral-300"
+                          : "text-neutral-600"
+                      }`}
                     >
                       <span
                         className={

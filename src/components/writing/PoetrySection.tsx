@@ -3,7 +3,8 @@ import React from "react";
 import { Heart } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import PoemCard from "./PoemCard";
-import { PoemOverviewData } from "@/pages/Writing"; // Import the type from Writing.tsx
+// Corrected import path for PoemOverviewData
+import { PoemOverviewData } from "@/hooks/useContentLoader";
 
 interface PoetrySectionProps {
   poems: PoemOverviewData[];
@@ -22,14 +23,14 @@ const PoetrySection: React.FC<PoetrySectionProps> = ({
 
   return (
     <div className="mb-20">
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 pt-12">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <Heart
+          {/* <Heart
             className={`${
               theme === "dark" ? "text-rose-400" : "text-rose-600"
             }`}
             size={28}
-          />
+          /> */}
           <h2
             className={`font-playwrite text-3xl md:text-4xl font-semibold ${
               theme === "dark" ? "text-rose-400" : "text-rose-500"
@@ -37,12 +38,6 @@ const PoetrySection: React.FC<PoetrySectionProps> = ({
           >
             Poetry
           </h2>
-          <Heart
-            className={`${
-              theme === "dark" ? "text-rose-400" : "text-rose-600"
-            }`}
-            size={28}
-          />
         </div>
         <p
           className={`text-lg font-light ${

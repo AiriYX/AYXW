@@ -7,9 +7,9 @@ import { format } from "date-fns";
 import { BlogPostOverviewData } from "@/hooks/useContentLoader";
 
 // Import specific images for articles
-import apiImg from "@/assets/img/api_img.jpg";
-import gptStudent from "@/assets/img/chatgpt_student.jpg"; // Corrected image name
-import spice from "@/assets/img/whyisitspicy.jpg"; // Corrected image name
+import apiImg from "/img/api_img.jpg"; // Path relative to public folder
+import chatgptStudent from "/img/chatgpt_student.jpg";
+import whyisitspicy from "/img/whyisitspicy.jpg";
 
 interface ArticleCardProps {
   post: BlogPostOverviewData;
@@ -19,11 +19,12 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ post }) => {
   const { theme } = useTheme();
   const navigate = useNavigate();
 
-  // Define a mapping for specific article images
+  // Define a mapping for specific article images using their slugs
+  // Referencing images directly from the public folder
   const articleImages: { [key: string]: string } = {
     "finder-howto": apiImg,
-    "ai-and-critical-thinking": gptStudent, // Applied for "AI and Critical Thinking" article
-    "loving-spice": spice, // Applied for "Mmm, Spice! Unpacking Why We Love the Burn" article
+    "ai-and-critical-thinking": chatgptStudent, // Mapped 'chatgpt_student.jpg' to its article slug
+    "loving-spice": whyisitspicy, // Mapped 'whyisitspicy.jpg' to its article slug
   };
 
   const currentArticleImage = articleImages[post.slug];
@@ -93,7 +94,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ post }) => {
               >
                 <div className="flex items-center space-x-1">
                   <Calendar size={14} />
-                  <span>{format(new Date(post.date), "MMMM d,PPPP")}</span>
+                  {/* Changed format string from "MMMM d,PPPP" to "MMMM d, yyyy" */}
+                  <span>{format(new Date(post.date), "MMMM d, yyyy")}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock size={14} />

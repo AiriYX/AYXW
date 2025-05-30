@@ -5,6 +5,8 @@ category: Research
 readTime: 8 min read
 ---
 
+![Finder App Prototype](/img/whyisitspicy.jpg)
+
 From fiery Korean noodles to a daring Ghost Pepper challenge, the world is full of spice enthusiasts. But have you ever stopped to wonder how they brave the heat without melting down? Or, more intriguing, why do we _crave_ that very sensation?
 
 Get ready for a deep dive into the fascinating world of spice, hormones, and the surprising role your brain plays in this fiery affair. It's about to get hot!

@@ -2,7 +2,8 @@
 import React from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import ArticleCard from "./ArticleCard";
-import { BlogPostOverviewData } from "@/pages/Writing";
+// Corrected import path for BlogPostOverviewData
+import { BlogPostOverviewData } from "@/hooks/useContentLoader";
 
 interface ArticleListProps {
   filteredPosts: BlogPostOverviewData[];
@@ -21,14 +22,6 @@ const ArticleList: React.FC<ArticleListProps> = ({
 
   return (
     <div className="mb-12">
-      <h2
-        className={`font-playwrite text-3xl md:text-4xl font-semibold text-center mb-12 ${
-          theme === "dark" ? "text-neutral-100" : "text-neutral-800"
-        }`}
-      >
-        Articles & Essays
-      </h2>
-
       {/* Category filter pills */}
       <div className="flex justify-center mb-8">
         <div

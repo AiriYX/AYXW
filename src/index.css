@@ -40,14 +40,25 @@
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --popover: {
+      /* Duplicate, remove this if already defined above */
+      default: "hsl(var(--popover))";
+      foreground: "hsl(var(--popover-foreground))";
+    }
+    --card: {
+      /* Duplicate, remove this if already defined above */
+      default: "hsl(var(--card))";
+      foreground: "hsl(var(--card-foreground))";
+    }
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
@@ -108,5 +119,10 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Apply font-serif to the body element */
+  body {
+    @apply font-serif;
   }
 }

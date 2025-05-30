@@ -5,7 +5,7 @@ category: Learning
 readTime: 7 min read # Estimate based on content length
 ---
 
-![Finder App Prototype](../assets/img/chatgpt_student.jpg)
+![Finder App Prototype](/img/api_img.jpg)
 
 My journey into app development truly kicked off when I decided to tackle a common challenge: finding nearby resources. This post will walk you through my process of building a "finder app," specifically focusing on how I integrated the Google API, and the key lessons I learned along the way.
 

@@ -6,8 +6,8 @@ const WritingPageHeader: React.FC = () => {
   const { theme } = useTheme();
 
   return (
-    <div className="text-center mb-20">
-      <div className="relative inline-block mb-8">
+    <div className="text-center mb-10">
+      <div className="relative inline-block">
         <h1
           className={`text-4xl md:text-5xl font-bold mb-6 font-playwrite ${
             theme === "dark" ? "text-neutral-100" : "text-neutral-800"
@@ -18,9 +18,9 @@ const WritingPageHeader: React.FC = () => {
               theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-600"
             }
           >
-            Ink{" "}
+            Articles{" "}
           </span>
-          & Logic
+          & Essays
         </h1>
         <p
           className={`text-sm md:text-base text-center font-light mb-2 ${

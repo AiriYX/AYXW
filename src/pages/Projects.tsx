@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import {
   ExternalLink,
@@ -74,11 +73,11 @@ const Projects = () => {
       status: "Coming Soon",
     },
     {
-      title: "Portfolio Website",
+      title: "Portfolio Website (Here!) 📍",
       description:
         "Personal portfolio showcasing projects and technical skills.",
       tech: ["React", "TypeScript", "Tailwind CSS", "Responsive Design"],
-      githubUrl: "#",
+      githubUrl: "https://github.com/AiriYX/AYXW",
       liveUrl: "#",
       date: "2024-12-15",
       status: "Finished",
@@ -160,7 +159,11 @@ const Projects = () => {
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
     } else if (sortBy === "status") {
-      const statusOrder = { Active: 1, "Coming Soon": 2, Finished: 3 };
+      const statusOrder = {
+        Active: 1,
+        "Coming Soon": 2,
+        Finished: 3,
+      };
       filtered = filtered.sort(
         (a, b) => statusOrder[a.status] - statusOrder[b.status]
       );
@@ -183,6 +186,10 @@ const Projects = () => {
         return theme === "dark"
           ? "bg-rose-500/20 text-rose-300"
           : "bg-rose-100 text-rose-700";
+      case "Current Website!":
+        return theme === "dark"
+          ? "bg-lime-500/20 text-lime-300"
+          : "bg-lime-100 text-lime-700";
       default:
         return theme === "dark"
           ? "bg-neutral-600/20 text-neutral-400"
@@ -302,7 +309,11 @@ const Projects = () => {
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div
-                        className={`${theme === "dark" ? "bg-fuchsia-500/40" : "bg-fuchsia-100/60"} rounded-lg p-2`}
+                        className={`${
+                          theme === "dark"
+                            ? "bg-fuchsia-500/40"
+                            : "bg-fuchsia-100/60"
+                        } rounded-lg p-2`}
                       >
                         {project.icon}
                       </div>
@@ -311,31 +322,55 @@ const Projects = () => {
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`${theme === "dark" ? "bg-white/20 hover:bg-white/30" : "bg-fuchsia-100/60 hover:bg-fuchsia-200"} p-1 rounded-md transition-colors`}
+                          className={`${
+                            theme === "dark"
+                              ? "bg-white/20 hover:bg-white/30"
+                              : "bg-fuchsia-100/60 hover:bg-fuchsia-200"
+                          } p-1 rounded-md transition-colors`}
                         >
                           <Github
-                            className={`${theme === "dark" ? "text-pink-500" : "text-fuchsia-600"} w-4 h-4`}
+                            className={`${
+                              theme === "dark"
+                                ? "text-pink-500"
+                                : "text-fuchsia-600"
+                            } w-4 h-4`}
                           />
                         </a>
                         <a
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`${theme === "dark" ? "bg-white/20 hover:bg-white/30" : "bg-fuchsia-100/60 hover:bg-fuchsia-200"} p-1 rounded-md transition-colors`}
+                          className={`${
+                            theme === "dark"
+                              ? "bg-white/20 hover:bg-white/30"
+                              : "bg-fuchsia-100/60 hover:bg-fuchsia-200"
+                          } p-1 rounded-md transition-colors`}
                         >
                           <ExternalLink
-                            className={`${theme === "dark" ? "text-pink-500" : "text-fuchsia-600"} w-4 h-4`}
+                            className={`${
+                              theme === "dark"
+                                ? "text-pink-500"
+                                : "text-fuchsia-600"
+                            } w-4 h-4`}
                           />
                         </a>
                       </div>
                     </div>
                     <h3
-                      className={`text-lg md:text-xl font-bold mb-2 ${theme === "dark" ? "text-fuchsia-500" : "text-fuchsia-700"}`}
+                      className={`text-lg md:text-xl font-bold mb-2 ${
+                        theme === "dark"
+                          ? "text-fuchsia-500"
+                          : "text-fuchsia-700"
+                      }`}
                     >
                       {project.title}
                     </h3>
                     <p
-                      className={`text-sm opacity-90 mb-3 ${theme === "dark" ? "text-neutral-200" : "text-neutral-700"}`}
+                      className={`text-sm opacity-90 mb-3 ${
+                        theme === "dark"
+                          ? "text-neutral-200"
+                          : "text-neutral-700"
+                      }`}
                     >
                       {project.description}
                     </p>
@@ -396,7 +431,11 @@ const Projects = () => {
                   >
                     <div className="flex items-start justify-between w-full">
                       <div
-                        className={`${theme === "dark" ? "bg-fuchsia-500/40" : "bg-fuchsia-100/60"} rounded-lg p-2`}
+                        className={`${
+                          theme === "dark"
+                            ? "bg-fuchsia-500/40"
+                            : "bg-fuchsia-100/60"
+                        } rounded-lg p-2`}
                       >
                         {project.icon}
                       </div>
@@ -405,32 +444,56 @@ const Projects = () => {
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`${theme === "dark" ? "bg-white/20 hover:bg-white/30" : "bg-fuchsia-100/60 hover:bg-fuchsia-200"} p-1 rounded-md transition-colors`}
+                          className={`${
+                            theme === "dark"
+                              ? "bg-white/20 hover:bg-white/30"
+                              : "bg-fuchsia-100/60 hover:bg-fuchsia-200"
+                          } p-1 rounded-md transition-colors`}
                         >
                           <Github
-                            className={`${theme === "dark" ? "text-pink-500" : "text-fuchsia-600"} w-4 h-4`}
+                            className={`${
+                              theme === "dark"
+                                ? "text-pink-500"
+                                : "text-fuchsia-600"
+                            } w-4 h-4`}
                           />
                         </a>
                         <a
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`${theme === "dark" ? "bg-white/20 hover:bg-white/30" : "bg-fuchsia-100/60 hover:bg-fuchsia-200"} p-1 rounded-md transition-colors`}
+                          className={`${
+                            theme === "dark"
+                              ? "bg-white/20 hover:bg-white/30"
+                              : "bg-fuchsia-100/60 hover:bg-fuchsia-200"
+                          } p-1 rounded-md transition-colors`}
                         >
                           <ExternalLink
-                            className={`${theme === "dark" ? "text-pink-500" : "text-fuchsia-600"} w-4 h-4`}
+                            className={`${
+                              theme === "dark"
+                                ? "text-pink-500"
+                                : "text-fuchsia-600"
+                            } w-4 h-4`}
                           />
                         </a>
                       </div>
                     </div>
                     <div>
                       <h3
-                        className={`text-xl font-bold mb-2 ${theme === "dark" ? "text-fuchsia-500" : "text-fuchsia-700"}`}
+                        className={`text-xl font-bold mb-2 ${
+                          theme === "dark"
+                            ? "text-fuchsia-500"
+                            : "text-fuchsia-700"
+                        }`}
                       >
                         {project.title}
                       </h3>
                       <p
-                        className={`text-sm opacity-90 mb-3 line-clamp-2 ${theme === "dark" ? "text-neutral-200" : "text-neutral-700"}`}
+                        className={`text-sm opacity-90 mb-3 line-clamp-2 ${
+                          theme === "dark"
+                            ? "text-neutral-200"
+                            : "text-neutral-700"
+                        }`}
                       >
                         {project.description}
                       </p>
@@ -487,8 +550,8 @@ const Projects = () => {
                         ? "bg-fuchsia-500 text-white"
                         : "bg-fuchsia-500 text-white"
                       : theme === "dark"
-                        ? "text-neutral-300 hover:bg-neutral-700/50"
-                        : "text-neutral-600 hover:bg-neutral-100/50"
+                      ? "text-neutral-300 hover:bg-neutral-700/50"
+                      : "text-neutral-600 hover:bg-neutral-100/50"
                   }`}
                 >
                   {filter}
@@ -560,7 +623,9 @@ const Projects = () => {
                         </h3>
                         <div className="flex items-center gap-2 flex-wrap">
                           <span
-                            className={`text-xs px-2 py-1 rounded-full ${getStatusColor(project.status)}`}
+                            className={`text-xs px-2 py-1 rounded-full ${getStatusColor(
+                              project.status
+                            )}`}
                           >
                             {project.status}
                           </span>
