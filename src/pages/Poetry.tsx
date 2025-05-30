@@ -1,3 +1,4 @@
+// src/pages/Poetry.tsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart } from "lucide-react";
@@ -7,8 +8,9 @@ import { useTheme } from "@/contexts/ThemeContext";
 export type MarkdownFrontmatter = {
   title: string;
   date: string;
-  mood: string;
+  mood: string | string[];
   pdfUrl?: string; // pdfUrl is now optional
+  excerpt?: string; // MODIFIED: Added optional excerpt field
 };
 
 export type MarkdownModule = {
@@ -20,8 +22,9 @@ export type PoemData = {
   title: string;
   content: string;
   date: string;
-  mood: string;
+  mood: string[];
   pdfUrl?: string; // pdfUrl is now optional
+  excerpt?: string; // MODIFIED: Added optional excerpt field
 };
 
 const Poetry = () => {
@@ -63,13 +66,24 @@ const Poetry = () => {
         const poemContent = module.html;
         const frontmatter = module.attributes;
 
+        // ADDED: Ensure mood is an array
+        const moodArray = Array.isArray(frontmatter.mood)
+          ? frontmatter.mood
+          : typeof frontmatter.mood === "string"
+          ? [frontmatter.mood]
+          : ["General"]; // Default if no mood is provided
+
+        // MODIFIED: Use frontmatter.excerpt if available
+        const poemExcerpt = frontmatter.excerpt;
+
         if (frontmatter && poemContent) {
           setPoem({
             title: frontmatter.title,
             content: poemContent,
             date: frontmatter.date,
-            mood: frontmatter.mood,
+            mood: moodArray, // Use the processed moodArray
             pdfUrl: frontmatter.pdfUrl, // Pass pdfUrl through
+            excerpt: poemExcerpt, // ADDED: Pass the excerpt
           });
         } else {
           setError("Failed to parse poem content.");
@@ -167,16 +181,20 @@ const Poetry = () => {
 
         <article className="animate-fade-in">
           <header className="mb-8 text-center">
+            {/* MODIFIED: Map over the mood array to create multiple pills */}
             <div className="flex items-center justify-center gap-3 mb-4">
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  theme === "dark"
-                    ? "bg-rose-300/20 text-rose-300"
-                    : "bg-rose-200 text-rose-600"
-                }`}
-              >
-                {poem.mood}
-              </span>
+              {poem.mood.map((moodItem, index) => (
+                <span
+                  key={index} // Use index as key if moodItem might not be unique
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    theme === "dark"
+                      ? "bg-rose-300/20 text-rose-300"
+                      : "bg-rose-200 text-rose-600"
+                  }`}
+                >
+                  {moodItem}
+                </span>
+              ))}
             </div>
             <h1
               className={`text-3xl md:text-4xl font-bold font-serif mb-4 ${
@@ -193,6 +211,17 @@ const Poetry = () => {
               {poem.date}
             </p>
           </header>
+
+          {/* ADDED: Display excerpt if available on detail page (optional) */}
+          {poem.excerpt && (
+            <p
+              className={`text-lg italic text-center mb-8 ${
+                theme === "dark" ? "text-neutral-300" : "text-neutral-600"
+              }`}
+            >
+              "{poem.excerpt}"
+            </p>
+          )}
 
           <div
             className={`prose max-w-2xl mx-auto text-center leading-relaxed text-lg font-light whitespace-pre-line ${

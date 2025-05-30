@@ -90,12 +90,6 @@ const PoetrySection: React.FC<PoetrySectionProps> = ({
           dark:scrollbar-thumb-pink-300
           dark:scrollbar-track-zinc-800
         `}
-        style={{
-          // fallback for browsers not supporting tailwind-scrollbar
-          scrollbarColor:
-            theme === "dark" ? "#fb7185 #27272a" : "#f43f5e #f3f4f6",
-          scrollbarWidth: "thin",
-        }}
       >
         <div className="flex gap-6 min-w-max">
           {poems.length === 0 && (
@@ -112,7 +106,6 @@ const PoetrySection: React.FC<PoetrySectionProps> = ({
           ))}
         </div>
       </div>
-      ›
     </div>
   );
 };

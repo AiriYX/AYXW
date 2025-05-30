@@ -1,12 +1,12 @@
 ---
 title: Mist Among Time
 date: 2024-02-03
-mood: Introspective
+mood: ["Introspective", "Contemplative"]
 # No pdfUrl or featured: true, so it will render Markdown
 ---
 
-Misty fog clouds all vision
-Erasing all paths on sight
+Misty fog clouds all vision,
+Erasing all paths on sight.
 
 Time continues running as we keep chasing,
 the gruesome reality of life approaches us at an exponential speed,

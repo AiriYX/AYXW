@@ -33,21 +33,27 @@ const PoemCard: React.FC<PoemCardProps> = ({ poem }) => {
     >
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
-          <span
-            className={`text-xs px-2 py-1 rounded-full ${
-              theme === "dark"
-                ? "bg-rose-300/20 text-rose-300"
-                : "bg-rose-200 text-rose-600"
-            }`}
-          >
-            {poem.mood}
-          </span>
+          {/* MODIFIED: Map over the mood array to create multiple pills */}
+          <div className="flex flex-wrap gap-x-2 gap-y-1">
+            {poem.mood.map((moodItem, index) => (
+              <span
+                key={index} // Use index as key if moodItem might not be unique
+                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                  theme === "dark"
+                    ? "bg-rose-300/20 text-rose-300"
+                    : "bg-rose-200 text-rose-600"
+                }`}
+              >
+                {moodItem}
+              </span>
+            ))}
+          </div>
           <span
             className={`text-xs ${
               theme === "dark" ? "text-neutral-500" : "text-neutral-400"
             }`}
           >
-            {/* Corrected format string: 'MMMM d, yyyy' */}
+            {/* Corrected format string: 'MMMM d,yyyy' */}
             <span>{format(new Date(poem.date), "MMMM d, yyyy")}</span>
           </span>
         </div>

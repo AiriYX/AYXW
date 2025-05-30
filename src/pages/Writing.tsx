@@ -1,3 +1,4 @@
+// src/pages/Writing.tsx
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -13,9 +14,10 @@ export type MarkdownFrontmatter = {
   date: string;
   category?: string | string[];
   readTime?: string;
-  mood?: string; // mood is specific to poems
+  mood?: string | string[];
   pdfUrl?: string;
   featured?: boolean;
+  excerpt?: string; // MODIFIED: Added optional excerpt field
 };
 
 export type MarkdownModule = {
@@ -37,7 +39,7 @@ export type PoemOverviewData = {
   title: string;
   excerpt: string;
   date: string;
-  mood: string;
+  mood: string[];
   slug: string;
   pdfUrl?: string;
   featured: boolean;
@@ -72,7 +74,7 @@ const Writing = () => {
     "Nostalgic",
     "Introspective",
     "Hopeful",
-    "Philosophical",
+    "Melancholic", // Added 'Emotional'
   ]; // Example moods, update as needed
   const [activePoemMoods, setActivePoemMoods] = useState<string[]>(["All"]);
 
@@ -135,7 +137,10 @@ const Writing = () => {
             ? [frontmatter.category]
             : ["Uncategorized"];
 
-          const excerpt = content
+          // MODIFIED: Use frontmatter.excerpt if available, otherwise generate
+          const excerpt = frontmatter.excerpt
+            ? frontmatter.excerpt
+            : content
             ? content.replace(/<[^>]*>/g, "").substring(0, 150) + "..."
             : "No excerpt available.";
 
@@ -178,15 +183,25 @@ const Writing = () => {
             const frontmatter = module.attributes;
             const content = module.html;
 
-            const excerpt = content
+            // MODIFIED: Use frontmatter.excerpt if available, otherwise generate
+            const excerpt = frontmatter.excerpt
+              ? frontmatter.excerpt
+              : content
               ? content.replace(/<[^>]*>/g, "").split(/[.?!]/)[0] + "."
               : "No excerpt available.";
 
+            // ADDED: Ensure mood is an array
+            const moodArray = Array.isArray(frontmatter.mood)
+              ? frontmatter.mood
+              : typeof frontmatter.mood === "string"
+              ? [frontmatter.mood]
+              : ["General"]; // Default if no mood is provided
+
             return {
               title: frontmatter.title,
-              excerpt: excerpt,
+              excerpt: excerpt, // Use the processed excerpt
               date: frontmatter.date,
-              mood: frontmatter.mood || "General",
+              mood: moodArray, // Use the processed moodArray
               slug: slug,
               pdfUrl: frontmatter.pdfUrl,
               featured: frontmatter.featured || false,
@@ -234,21 +249,12 @@ const Writing = () => {
   const poemsToDisplay = useMemo(() => {
     let currentPoems = poems; // Use the 'poems' state which contains all sorted poems
 
-    // Filter by 'featured' status if not "All" moods are selected, or if you want to always show only featured.
-    // Based on previous discussion, if no filter is applied, only featured poems were shown.
-    // Now, if "All" is selected, show all poems. Otherwise, filter by mood.
     if (!activePoemMoods.includes("All")) {
-      currentPoems = currentPoems.filter(
-        (poem) => activePoemMoods.some((activeMood) => poem.mood === activeMood) // Assuming mood is a single string for now
+      // MODIFIED: Use .some() if any of the poem's moods match an active mood
+      currentPoems = currentPoems.filter((poem) =>
+        activePoemMoods.some((activeMood) => poem.mood.includes(activeMood))
       );
     }
-
-    // You might also want to re-apply featured filter if it's a global requirement
-    // For now, I'll assume that if a mood filter is active, it takes precedence.
-    // If "All" is selected, it shows all poems (featured and non-featured).
-    // If a specific mood is selected, it shows all poems of that mood.
-    // If you explicitly want ONLY featured poems to ever show, add a .filter(poem => poem.featured) here.
-    // Example: currentPoems = currentPoems.filter(poem => poem.featured && activePoemMoods.some(...));
 
     return currentPoems; // Return the filtered (and already sorted) poems
   }, [poems, activePoemMoods]);
