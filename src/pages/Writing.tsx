@@ -1,61 +1,37 @@
 // src/pages/Writing.tsx
-import React, { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { format } from "date-fns";
+import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom"; // Keep navigate if it's used elsewhere
 
 import { useTheme } from "@/contexts/ThemeContext";
+import {
+  useContentLoader,
+  BlogPostOverviewData,
+  PoemOverviewData,
+} from "@/hooks/useContentLoader"; // Import the new hook
+import { useCategoryFilter } from "@/hooks/useCategoryFilter"; // Import the new filter hook
 
 import WritingPageHeader from "@/components/writing/WritingPageHeader";
 import ArticleList from "@/components/writing/ArticleList";
-import PoetrySection from "@/components/writing/PoetrySection"; // Ensure this import is correct
-
-export type MarkdownFrontmatter = {
-  title: string;
-  date: string;
-  category?: string | string[];
-  readTime?: string;
-  mood?: string | string[];
-  pdfUrl?: string;
-  featured?: boolean;
-  excerpt?: string; // MODIFIED: Added optional excerpt field
-};
-
-export type MarkdownModule = {
-  html: string;
-  attributes: MarkdownFrontmatter;
-};
-
-export type BlogPostOverviewData = {
-  title: string;
-  excerpt: string;
-  date: string;
-  readTime: string;
-  category: string[];
-  slug: string;
-  number: string;
-};
-
-export type PoemOverviewData = {
-  title: string;
-  excerpt: string;
-  date: string;
-  mood: string[];
-  slug: string;
-  pdfUrl?: string;
-  featured: boolean;
-};
+import PoetrySection from "@/components/writing/PoetrySection";
 
 const Writing = () => {
   const { theme } = useTheme();
-  const navigate = useNavigate();
 
-  const [blogPosts, setBlogPosts] = useState<BlogPostOverviewData[]>([]);
-  const [poems, setPoems] = useState<PoemOverviewData[]>([]); // This will contain all poems loaded
-  const [loadingArticles, setLoadingArticles] = useState(true);
-  const [loadingPoems, setLoadingPoems] = useState(true);
-  const [errorArticles, setErrorArticles] = useState<string | null>(null);
-  const [errorPoems, setErrorPoems] = useState<string | null>(null);
+  // Load blog posts using the new hook
+  const {
+    data: allBlogPosts,
+    loading: loadingArticles,
+    error: errorArticles,
+  } = useContentLoader<BlogPostOverviewData>("blogs", "date");
 
+  // Load poems using the new hook
+  const {
+    data: allPoems,
+    loading: loadingPoems,
+    error: errorPoems,
+  } = useContentLoader<PoemOverviewData>("poems", "date");
+
+  // Define available categories/moods
   const articleCategories = [
     "All",
     "AI/Tech",
@@ -63,201 +39,42 @@ const Writing = () => {
     "Learning",
     "Technology",
   ];
-  const [activeArticleCategories, setActiveArticleCategories] = useState<
-    string[]
-  >(["All"]); // Renamed for clarity
-
-  // New state for poetry filters
   const poemMoods = [
     "All",
     "Contemplative",
     "Nostalgic",
     "Introspective",
     "Hopeful",
-    "Melancholic", // Added 'Emotional'
-  ]; // Example moods, update as needed
-  const [activePoemMoods, setActivePoemMoods] = useState<string[]>(["All"]);
+    "Melancholic",
+  ];
 
-  // Toggle function for Article Categories
-  const toggleArticleCategory = (category: string) => {
-    setActiveArticleCategories((prevCategories) => {
-      if (category === "All") {
-        return ["All"];
-      } else {
-        const updatedCategories = prevCategories.filter((cat) => cat !== "All");
+  // Use the new category filter hook for articles
+  const {
+    activeCategories: activeArticleCategories,
+    toggleCategory: toggleArticleCategory,
+    filterContent: filterArticles,
+  } = useCategoryFilter(articleCategories);
 
-        if (updatedCategories.includes(category)) {
-          const newCategories = updatedCategories.filter(
-            (cat) => cat !== category
-          );
-          return newCategories.length === 0 ? ["All"] : newCategories;
-        } else {
-          return [...updatedCategories, category];
-        }
-      }
-    });
-  };
+  // Use the new category filter hook for poems
+  const {
+    activeCategories: activePoemMoods,
+    toggleCategory: togglePoemMood,
+    filterContent: filterPoems,
+  } = useCategoryFilter(poemMoods);
 
-  // New toggle function for Poem Moods
-  const togglePoemMood = (mood: string) => {
-    setActivePoemMoods((prevMoods) => {
-      if (mood === "All") {
-        return ["All"];
-      } else {
-        const updatedMoods = prevMoods.filter((m) => m !== "All");
-
-        if (updatedMoods.includes(mood)) {
-          const newMoods = updatedMoods.filter((m) => m !== mood);
-          return newMoods.length === 0 ? ["All"] : newMoods;
-        } else {
-          return [...updatedMoods, mood];
-        }
-      }
-    });
-  };
-
-  useEffect(() => {
-    const loadArticles = async () => {
-      try {
-        setLoadingArticles(true);
-        const markdownModules: Record<string, MarkdownModule> =
-          import.meta.glob("../contents/blogs/*.md", { eager: true });
-
-        const loadedPosts: BlogPostOverviewData[] = Object.entries(
-          markdownModules
-        ).map(([path, module]) => {
-          const slug =
-            path.split("/").pop()?.replace(/\.md$/, "") || `post-slug`;
-          const frontmatter = module.attributes;
-          const content = module.html;
-
-          const categoryArray = Array.isArray(frontmatter.category)
-            ? frontmatter.category
-            : typeof frontmatter.category === "string"
-            ? [frontmatter.category]
-            : ["Uncategorized"];
-
-          // MODIFIED: Use frontmatter.excerpt if available, otherwise generate
-          const excerpt = frontmatter.excerpt
-            ? frontmatter.excerpt
-            : content
-            ? content.replace(/<[^>]*>/g, "").substring(0, 150) + "..."
-            : "No excerpt available.";
-
-          return {
-            title: frontmatter.title,
-            excerpt: excerpt,
-            date: frontmatter.date,
-            readTime: frontmatter.readTime || "N/A",
-            category: categoryArray,
-            slug: slug,
-            number: "",
-          };
-        });
-
-        loadedPosts.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-
-        setBlogPosts(loadedPosts);
-      } catch (err) {
-        console.error("Failed to load blog posts:", err);
-        setErrorArticles("Failed to load articles.");
-      } finally {
-        setLoadingArticles(false);
-      }
-    };
-
-    const loadPoetry = async () => {
-      try {
-        setLoadingPoems(true);
-        const poemModules: Record<string, MarkdownModule> = import.meta.glob(
-          "../contents/poems/*.md",
-          { eager: true }
-        );
-
-        const loadedPoems: PoemOverviewData[] = Object.entries(poemModules).map(
-          ([path, module]) => {
-            const slug =
-              path.split("/").pop()?.replace(/\.md$/, "") || "poem-slug";
-            const frontmatter = module.attributes;
-            const content = module.html;
-
-            // MODIFIED: Use frontmatter.excerpt if available, otherwise generate
-            const excerpt = frontmatter.excerpt
-              ? frontmatter.excerpt
-              : content
-              ? content.replace(/<[^>]*>/g, "").split(/[.?!]/)[0] + "."
-              : "No excerpt available.";
-
-            // ADDED: Ensure mood is an array
-            const moodArray = Array.isArray(frontmatter.mood)
-              ? frontmatter.mood
-              : typeof frontmatter.mood === "string"
-              ? [frontmatter.mood]
-              : ["General"]; // Default if no mood is provided
-
-            return {
-              title: frontmatter.title,
-              excerpt: excerpt, // Use the processed excerpt
-              date: frontmatter.date,
-              mood: moodArray, // Use the processed moodArray
-              slug: slug,
-              pdfUrl: frontmatter.pdfUrl,
-              featured: frontmatter.featured || false,
-            };
-          }
-        );
-
-        // The sorting by date happens here for all loaded poems
-        loadedPoems.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-
-        setPoems(loadedPoems); // All poems are now loaded and sorted here
-      } catch (err) {
-        console.error("Failed to load poems:", err);
-        setErrorPoems("Failed to load poems.");
-      } finally {
-        setLoadingPoems(false);
-      }
-    };
-
-    loadArticles();
-    loadPoetry();
-  }, []);
-
-  // Filtering logic for Articles (no change here, still activeCategories)
+  // Filter and number blog posts
   const postsToDisplay = useMemo(() => {
-    let currentPosts = blogPosts;
-
-    if (!activeArticleCategories.includes("All")) {
-      currentPosts = blogPosts.filter((post) =>
-        activeArticleCategories.every((activeCat) =>
-          post.category.includes(activeCat)
-        )
-      );
-    }
-
-    return currentPosts.map((post, index) => ({
+    const filtered = filterArticles(allBlogPosts, "articles");
+    return filtered.map((post, index) => ({
       ...post,
       number: String(index + 1).padStart(2, "0"),
     }));
-  }, [blogPosts, activeArticleCategories]);
+  }, [allBlogPosts, activeArticleCategories, filterArticles]);
 
-  // New filtering logic for Poems
+  // Filter poems
   const poemsToDisplay = useMemo(() => {
-    let currentPoems = poems; // Use the 'poems' state which contains all sorted poems
-
-    if (!activePoemMoods.includes("All")) {
-      // MODIFIED: Use .some() if any of the poem's moods match an active mood
-      currentPoems = currentPoems.filter((poem) =>
-        activePoemMoods.some((activeMood) => poem.mood.includes(activeMood))
-      );
-    }
-
-    return currentPoems; // Return the filtered (and already sorted) poems
-  }, [poems, activePoemMoods]);
+    return filterPoems(allPoems, "poems");
+  }, [allPoems, activePoemMoods, filterPoems]);
 
   if (loadingArticles || loadingPoems) {
     return (
@@ -305,8 +122,8 @@ const Writing = () => {
             toggleCategory={toggleArticleCategory}
           />
 
-          <PoetrySection // Pass new props for filtering
-            poems={poemsToDisplay} // Pass the newly filtered poems
+          <PoetrySection
+            poems={poemsToDisplay}
             poemMoods={poemMoods}
             activePoemMoods={activePoemMoods}
             togglePoemMood={togglePoemMood}

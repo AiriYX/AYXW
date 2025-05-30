@@ -5,7 +5,9 @@ category: Learning
 readTime: 7 min read # Estimate based on content length
 ---
 
-Have you ever wanted to build something useful that solves a real-world problem? My journey into app development truly kicked off when I decided to tackle a common challenge: finding nearby resources. This post will walk you through my process of building a "finder app," specifically focusing on how I integrated the Google API, and the key lessons I learned along the way.
+![Finder App Prototype](../assets/img/chatgpt_student.jpg)
+
+My journey into app development truly kicked off when I decided to tackle a common challenge: finding nearby resources. This post will walk you through my process of building a "finder app," specifically focusing on how I integrated the Google API, and the key lessons I learned along the way.
 
 Whether you're a budding developer curious about location-based services or just want to see how an idea goes from concept to prototype, you're in the right place!
 

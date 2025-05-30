@@ -4,7 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { format } from "date-fns";
-import { BlogPostOverviewData } from "@/pages/Writing";
+import { BlogPostOverviewData } from "@/hooks/useContentLoader";
+
+// Import specific images for articles
+import apiImg from "@/assets/img/api_img.jpg";
+import gptStudent from "@/assets/img/chatgpt_student.jpg"; // Corrected image name
+import spice from "@/assets/img/whyisitspicy.jpg"; // Corrected image name
 
 interface ArticleCardProps {
   post: BlogPostOverviewData;
@@ -13,6 +18,15 @@ interface ArticleCardProps {
 const ArticleCard: React.FC<ArticleCardProps> = ({ post }) => {
   const { theme } = useTheme();
   const navigate = useNavigate();
+
+  // Define a mapping for specific article images
+  const articleImages: { [key: string]: string } = {
+    "finder-howto": apiImg,
+    "ai-and-critical-thinking": gptStudent, // Applied for "AI and Critical Thinking" article
+    "loving-spice": spice, // Applied for "Mmm, Spice! Unpacking Why We Love the Burn" article
+  };
+
+  const currentArticleImage = articleImages[post.slug];
 
   return (
     <article
@@ -79,8 +93,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ post }) => {
               >
                 <div className="flex items-center space-x-1">
                   <Calendar size={14} />
-                  {/* Corrected format string: 'MMMM d, yyyy' */}
-                  <span>{format(new Date(post.date), "MMMM d, yyyy")}</span>
+                  <span>{format(new Date(post.date), "MMMM d,PPPP")}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock size={14} />
@@ -101,31 +114,39 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ post }) => {
             }`}
           >
             <div className="mb-6 relative h-32 overflow-hidden rounded-lg">
-              <div
-                className={`absolute inset-0 ${
-                  theme === "dark"
-                    ? "bg-gradient-to-r from-neutral-800 to-neutral-700"
-                    : "bg-gradient-to-r from-neutral-100 to-neutral-50"
-                }`}
-              >
-                {/* Abstract dots pattern */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="grid grid-cols-8 gap-2 opacity-30">
-                    {Array.from({ length: 24 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className={`w-2 h-2 rounded-full ${
-                          theme === "dark" ? "bg-rose-300" : "bg-rose-600"
-                        }`}
-                        style={{
-                          animationDelay: `${i * 0.1}s`,
-                          opacity: Math.random() > 0.5 ? 0.8 : 0.3,
-                        }}
-                      />
-                    ))}
+              {currentArticleImage ? (
+                <img
+                  src={currentArticleImage}
+                  alt={post.title}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              ) : (
+                <div
+                  className={`absolute inset-0 ${
+                    theme === "dark"
+                      ? "bg-gradient-to-r from-neutral-800 to-neutral-700"
+                      : "bg-gradient-to-r from-neutral-100 to-neutral-50"
+                  }`}
+                >
+                  {/* Abstract dots pattern (fallback) */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="grid grid-cols-8 gap-2 opacity-30">
+                      {Array.from({ length: 24 }).map((_, i) => (
+                        <div
+                          key={i}
+                          className={`w-2 h-2 rounded-full ${
+                            theme === "dark" ? "bg-rose-300" : "bg-rose-600"
+                          }`}
+                          style={{
+                            animationDelay: `${i * 0.1}s`,
+                            opacity: Math.random() > 0.5 ? 0.8 : 0.3,
+                          }}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
 
             <p
