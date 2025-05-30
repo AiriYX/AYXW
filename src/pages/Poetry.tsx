@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { format } from "date-fns"; // Add this import at the top
 
 // Re-using MarkdownFrontmatter and MarkdownModule types
 export type MarkdownFrontmatter = {
@@ -208,7 +209,7 @@ const Poetry = () => {
                 theme === "dark" ? "text-neutral-400" : "text-neutral-500"
               }`}
             >
-              {poem.date}
+              {format(new Date(poem.date), "MMMM d,yyyy")}
             </p>
           </header>
 
