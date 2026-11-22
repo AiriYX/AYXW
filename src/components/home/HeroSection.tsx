@@ -1,60 +1,38 @@
-
-import React, { useState, useEffect } from "react";
 import FloatingPhrases from "./hero/FloatingPhrases";
 import SignatureSection from "./hero/SignatureSection";
+import HeroVision from "./hero/HeroVision";
 import HeroHeading from "./hero/HeroHeading";
 import HeroTagline from "./hero/HeroTagline";
 import HeroCTAButtons from "./hero/HeroCTAButtons";
 import ScrollDownButton from "./hero/ScrollDownButton";
+import { useScrollY } from "@/hooks/useScrollY";
+import { smoothScrollTo } from "@/utils/smoothScroll";
 
 const HeroSection = () => {
-  const [animationStarted, setAnimationStarted] = useState(false);
+  const scrollY = useScrollY();
 
-  const smoothScrollToElement = (element, duration = 1200, offset = 0) => {
-    const targetRect = element.getBoundingClientRect();
-    const targetY = targetRect.top + window.pageYOffset + offset;
-    const startY = window.pageYOffset;
-    const distance = targetY - startY;
-    let startTime = null;
-
-    const easeInOutQuad = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
-
-    const animation = (currentTime) => {
-      if (!startTime) startTime = currentTime;
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      window.scrollTo(0, startY + distance * easeInOutQuad(progress));
-      if (progress < 1) {
-        requestAnimationFrame(animation);
-      }
-    };
-
-    requestAnimationFrame(animation);
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationStarted(true);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const scrollToNextSection = () => {
-    const nextSection = document.getElementById("build-lab");
-    if (nextSection) {
-      smoothScrollToElement(nextSection, 1200, 0);
-    }
-  };
+  // slow, eased glide down to the content
+  const scrollToNextSection = () =>
+    smoothScrollTo(document.getElementById("build-lab"), {
+      duration: 1800,
+      offset: 0,
+    });
 
   return (
-    <section className="min-h-screen flex flex-col relative overflow-hidden pb-1">
+    <section className="relative flex min-h-[calc(100vh-5rem)] flex-col overflow-hidden">
       <FloatingPhrases />
-      
-      {/* Main hero content - centered with better spacing */}
-      <div className="flex-1 flex items-center justify-center px-6 py-10 relative z-20">
-        <div className="max-w-5xl mx-auto text-center">
+
+      {/* hero content drifts up a little slower than the page (parallax) */}
+      <div
+        className="relative z-20 flex flex-1 items-center justify-center px-6 py-10"
+        style={{
+          transform: `translateY(${scrollY * 0.25}px)`,
+          opacity: Math.max(0, 1 - scrollY / 700),
+        }}
+      >
+        <div className="mx-auto w-full max-w-4xl text-center">
           <SignatureSection />
-          <HeroTagline />
+          <HeroVision />
           <HeroHeading />
           <HeroTagline />
           <HeroCTAButtons />

@@ -1,0 +1,125 @@
+/**
+ * Home page: hero title, skills marquee, experience log, stacked project cards.
+ */
+
+/* ---------- landing hero ---------- */
+
+.neon-flicker-in {
+  animation: neon-flicker-in 1.2s linear both;
+}
+@keyframes neon-flicker-in {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  14% {
+    opacity: 0.1;
+  }
+  22% {
+    opacity: 1;
+  }
+  26% {
+    opacity: 0.3;
+  }
+  34%,
+  100% {
+    opacity: 1;
+  }
+}
+
+.hero-phrase {
+  animation:
+    hero-phrase-in 0.8s ease-out both,
+    hero-float 6s ease-in-out infinite;
+}
+@keyframes hero-float {
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes hero-phrase-in {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+}
+
+.term-caret::after,
+.term-caret-end::after {
+  content: "▍";
+  margin-left: 1px;
+  animation: fx-blink 1.1s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neon-flicker-in,
+  .hero-phrase,
+  .term-caret::after,
+  .term-caret-end::after {
+    animation: none;
+  }
+}
+
+/* ---------- landing: below the hero ---------- */
+
+.marquee {
+  animation: marquee 32s linear infinite;
+}
+.marquee-reverse {
+  animation-direction: reverse;
+}
+.marquee:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.log-line {
+  opacity: 0;
+}
+.log-line.is-in {
+  animation: log-in 0.35s ease-out both;
+}
+@keyframes log-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+  }
+  .log-line,
+  .log-line.is-in {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* mission line under the signature: fades up after the handwriting */
+.hero-vision {
+  animation: hero-vision-in 0.9s ease-out 1.6s both;
+}
+@keyframes hero-vision-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-vision { animation: none; }
+}
+
+/* never clip the handwritten signature's loops and descenders */
+.vara-sign svg {
+  overflow: visible;
+}

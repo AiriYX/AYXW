@@ -1,88 +1,53 @@
 // src/utils/markdownLoader.ts
+import type { MarkdownModule } from "@/types/markdown";
 
-export type MarkdownFrontmatter = {
-  title: string;
-  date: string;
-  category: string;
-  readTime: string;
-};
-
-export type MarkdownModule = {
-  html: string;
-  attributes: MarkdownFrontmatter; // Changed to attributes based on previous discussion
-};
+export type { MarkdownFrontmatter, MarkdownModule } from "@/types/markdown";
 
 export type BlogPostData = {
   title: string;
   date: string;
-  category: string;
+  category: string | string[];
   readTime: string;
+  excerpt?: string;
   content: string;
 };
 
 const markdownModules: Record<string, MarkdownModule> = import.meta.glob(
   "../contents/blogs/*.md",
-  { eager: true }
+  { eager: true },
 );
 
 export async function loadMarkdownPost(
-  slug: string
+  slug: string,
 ): Promise<BlogPostData | null> {
-  console.log(`[loadMarkdownPost] received slug: ${slug}`); // New log
+  const expectedPathEnd = `/blogs/${slug.toLowerCase()}.md`;
 
-  const normalizedSlug = slug.toLowerCase();
-  const expectedPathEnd = `/blogs/${normalizedSlug}.md`; // Construct the expected path end
-
-  console.log(`[loadMarkdownPost] normalized slug: ${normalizedSlug}`); // New log
-  console.log(`[loadMarkdownPost] expected path end: ${expectedPathEnd}`); // New log
-  console.log(
-    "[loadMarkdownPost] All markdown modules found by glob:",
-    Object.keys(markdownModules) // This is already there, but crucial!
+  const entry = Object.entries(markdownModules).find(([path]) =>
+    path.toLowerCase().endsWith(expectedPathEnd),
   );
 
-  const entry = Object.entries(markdownModules).find(([path]) => {
-    const lowerCaseFullPath = path.toLowerCase();
-    const isMatch = lowerCaseFullPath.endsWith(expectedPathEnd);
-    console.log(
-      `[loadMarkdownPost] Checking path: ${path} (lower: ${lowerCaseFullPath}) against expected: ${expectedPathEnd} - Match: ${isMatch}`
-    ); // New log
-    return isMatch;
-  });
-
   if (!entry) {
-    console.log("[loadMarkdownPost] No matching entry found for slug:", slug); // New log
+    console.warn(`[loadMarkdownPost] No matching post found for slug: ${slug}`);
     return null;
   }
 
-  const importer = entry[1];
-
-  // The 'rawMarkdown' variable from previous discussion has been replaced by the plugin
-  // which provides 'html' and 'attributes' directly on the module.
-  const module = importer; // In eager mode, importer directly is the module.
-
-  const postHtmlContent = module.html;
+  const module = entry[1];
   const frontmatter = module.attributes;
+  const content = module.html;
 
-  if (frontmatter && postHtmlContent) {
-    console.log("[loadMarkdownPost] Successfully parsed post data:", {
-      title: frontmatter.title,
-      date: frontmatter.date,
-      category: frontmatter.category,
-      readTime: frontmatter.readTime,
-      content: "HTML content present (not logged in full)",
-    }); // New log
-    return {
-      title: frontmatter.title,
-      date: frontmatter.date,
-      category: frontmatter.category,
-      readTime: frontmatter.readTime,
-      content: postHtmlContent,
-    };
-  } else {
+  if (!frontmatter || !content) {
     console.warn(
-      "[loadMarkdownPost] Post data or content missing after parsing for slug:",
-      slug
-    ); // New log
+      `[loadMarkdownPost] Post data or content missing for slug: ${slug}`,
+    );
     return null;
   }
+
+  return {
+    title: frontmatter.title,
+    date: frontmatter.date,
+    category: frontmatter.category ?? "",
+    readTime: frontmatter.readTime ?? "",
+    excerpt: frontmatter.excerpt,
+    content,
+  };
 }

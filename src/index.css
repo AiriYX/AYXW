@@ -3,24 +3,28 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Moirai One";
-  src: url("./assets/fonts/MoiraiOne-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Lacquer";
-  src: url("./assets/fonts/Lacquer-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
   font-family: "Playwrite HU";
   src: url("./assets/fonts/PlaywriteHU-VariableFont_wght.ttf")
     format("truetype");
-  font-weight: normal;
+  font-weight: 100 400;
   font-style: normal;
+  font-display: swap;
+}
+
+/* Body / UI font — the only other font besides Playwrite HU. */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("./assets/fonts/JetBrainsMono-Variable.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("./assets/fonts/JetBrainsMono-Variable-Italic.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: italic;
+  font-display: swap;
 }
 
 @layer base {

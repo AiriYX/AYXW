@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import Vara from "vara";
@@ -28,10 +27,12 @@ const SignatureSection = () => {
             },
           ],
           {
-            strokeWidth: 1.5,
-            color: theme === "dark" ? "#e5e5e5" : "#404040",
-            fontSize: 48,
-          }
+            // thin pen + bigger size = the light, tight look of the original
+            strokeWidth: 1.4,
+            color: theme === "dark" ? "#f5d0fe" : "#334155",
+            fontSize: window.innerWidth < 640 ? 30 : 46,
+            letterSpacing: window.innerWidth < 640 ? -3 : -10, // pull letters close
+          },
         );
 
         const loadTimer = setTimeout(() => {
@@ -63,7 +64,7 @@ const SignatureSection = () => {
       <div
         id="signature"
         ref={signatureRef}
-        className="mx-auto w-full max-w-md min-h-[120px] flex items-center justify-center text-center"
+        className="vara-sign mx-auto flex min-h-[120px] w-full max-w-3xl items-center justify-center overflow-visible text-center"
         style={{
           opacity: varaLoaded && !varaError ? 1 : 0,
           transition: "opacity 0.5s ease-in-out",

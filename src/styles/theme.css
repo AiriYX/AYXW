@@ -1,0 +1,355 @@
+/**
+ * Shared neon / sunny theme: colour variables, page background, glass cards, neon tubes.
+ * Used on every page.
+ */
+
+/* Everything is scoped under .fx (added by <NeonPage>) so nothing leaks. */
+
+.fx {
+  --fx-pink: 236 72 153; /* neon pink */
+  --fx-cyan: 99 102 241; /* indigo-500 (palette blue) */
+  --fx-violet: 139 92 246; /* violet-500 */
+  --fx-line: rgba(139, 92, 246, 0.16);
+  --fx-panel: rgba(255, 255, 255, 0.82);
+  --fx-panel-border: rgba(139, 92, 246, 0.22);
+}
+
+/* light mode: pastel daylight */
+.fx:not(.fx-dark) {
+  --fx-line: rgba(167, 139, 250, 0.22);
+}
+.fx:not(.fx-dark) .fx-glow {
+  /* daylight: soft pink + periwinkle washes */
+  background:
+    radial-gradient(
+      40% 32% at 50% 14%,
+      rgba(255, 255, 255, 0.7),
+      transparent 70%
+    ),
+    radial-gradient(
+      50% 40% at 10% 10%,
+      rgba(244, 114, 182, 0.22),
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 40% at 92% 22%,
+      rgba(129, 140, 248, 0.22),
+      transparent 70%
+    ),
+    radial-gradient(
+      60% 40% at 50% 100%,
+      rgba(167, 139, 250, 0.2),
+      transparent 70%
+    );
+}
+
+.fx.fx-dark {
+  --fx-line: rgba(236, 72, 153, 0.12);
+  --fx-panel: rgba(13, 11, 24, 0.82);
+  --fx-panel-border: rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- background ---------- */
+
+.fx-glow {
+  /* light spilling across a dark café: pink sign glow top-left, violet in the
+     middle, blue on the right, plus a soft pool of light behind the hero */
+  background:
+    radial-gradient(
+      45% 35% at 50% 16%,
+      rgb(var(--fx-violet) / 0.26),
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 45% at 12% 8%,
+      rgb(var(--fx-pink) / 0.3),
+      transparent 70%
+    ),
+    radial-gradient(
+      50% 50% at 92% 30%,
+      rgb(var(--fx-cyan) / 0.24),
+      transparent 72%
+    ),
+    radial-gradient(
+      70% 45% at 30% 75%,
+      rgb(var(--fx-violet) / 0.16),
+      transparent 70%
+    ),
+    radial-gradient(
+      60% 40% at 85% 100%,
+      rgb(var(--fx-pink) / 0.18),
+      transparent 70%
+    );
+}
+
+.fx-grid-floor {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  bottom: -5%;
+  height: 55%;
+  background-image:
+    linear-gradient(var(--fx-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--fx-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  transform: perspective(520px) rotateX(64deg);
+  transform-origin: bottom center;
+  -webkit-mask-image: linear-gradient(to top, #000 15%, transparent 90%);
+  mask-image: linear-gradient(to top, #000 15%, transparent 90%);
+  animation: fx-grid-move 5s linear infinite;
+}
+
+@keyframes fx-grid-move {
+  to {
+    background-position: 0 56px;
+  }
+}
+
+.fx-scanlines {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.025) 0px,
+    rgba(255, 255, 255, 0.025) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+/* ---------- header ---------- */
+
+.fx-cursor::after {
+  content: "▍";
+  margin-left: 2px;
+  animation: fx-blink 1.1s steps(1) infinite;
+}
+
+@keyframes fx-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.fx-title-glow {
+  filter: drop-shadow(0 0 18px rgb(var(--fx-pink) / 0.35))
+    drop-shadow(0 0 32px rgb(var(--fx-cyan) / 0.2));
+}
+
+/* ---------- cards ---------- */
+
+.fx-card {
+  --mx: 50%;
+  --my: 50%;
+  --rx: 0deg;
+  --ry: 0deg;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.25s ease-out;
+  transform-style: preserve-3d;
+}
+
+/* gradient hairline border that lights up on hover */
+.fx-card-border {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    var(--fx-panel-border),
+    var(--fx-panel-border)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.fx-card-border-hot {
+  background: conic-gradient(
+    from var(--fx-angle, 0deg),
+    rgb(var(--fx-pink)),
+    rgb(var(--fx-cyan)),
+    rgb(var(--fx-violet)),
+    rgb(var(--fx-pink))
+  );
+  opacity: 0;
+  animation: fx-spin 4s linear infinite;
+}
+
+.fx-card:hover .fx-card-border-hot,
+.fx-card:focus-visible .fx-card-border-hot {
+  opacity: 1;
+}
+
+@property --fx-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes fx-spin {
+  to {
+    --fx-angle: 360deg;
+  }
+}
+
+.fx-panel {
+  background: var(--fx-panel);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+/* mouse-follow light */
+.fx-spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(
+    320px circle at var(--mx) var(--my),
+    rgb(var(--fx-cyan) / 0.12),
+    rgb(var(--fx-pink) / 0.08) 40%,
+    transparent 70%
+  );
+}
+
+.fx-card:hover .fx-spotlight {
+  opacity: 1;
+}
+
+/* HUD corner brackets */
+.fx-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 0 solid rgb(var(--fx-cyan) / 0.55);
+  pointer-events: none;
+  transition: all 0.3s;
+}
+.fx-corner.tl {
+  top: 10px;
+  left: 10px;
+  border-top-width: 1.5px;
+  border-left-width: 1.5px;
+}
+.fx-corner.tr {
+  top: 10px;
+  right: 10px;
+  border-top-width: 1.5px;
+  border-right-width: 1.5px;
+}
+.fx-corner.bl {
+  bottom: 10px;
+  left: 10px;
+  border-bottom-width: 1.5px;
+  border-left-width: 1.5px;
+}
+.fx-corner.br {
+  bottom: 10px;
+  right: 10px;
+  border-bottom-width: 1.5px;
+  border-right-width: 1.5px;
+}
+
+.fx-card:hover .fx-corner {
+  border-color: rgb(var(--fx-pink) / 0.9);
+  width: 20px;
+  height: 20px;
+}
+
+/* status LED */
+.fx-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: currentColor;
+  box-shadow:
+    0 0 8px currentColor,
+    0 0 2px currentColor;
+}
+.fx-led-pulse {
+  animation: fx-pulse 1.8s ease-in-out infinite;
+}
+@keyframes fx-pulse {
+  50% {
+    opacity: 0.35;
+    box-shadow: 0 0 2px currentColor;
+  }
+}
+
+/* modal scan sweep */
+.fx-scan {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 40%;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(var(--fx-cyan) / 0.12),
+    transparent
+  );
+  animation: fx-scan 1.1s ease-out 1 forwards;
+}
+@keyframes fx-scan {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(260%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-grid-floor,
+  .fx-card-border-hot,
+  .fx-led-pulse,
+  .fx-cursor::after,
+  .fx-scan {
+    animation: none;
+  }
+  .fx-card {
+    transform: none;
+  }
+}
+
+/* ---------- about: neon tubes ---------- */
+
+.about-tube {
+  animation: about-hum 3.2s ease-in-out infinite;
+}
+@keyframes about-hum {
+  50% {
+    stroke-opacity: 0.2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-tube {
+    animation: none;
+  }
+  .about-star {
+    display: none;
+  }
+}
+
+/* pop-art hero title: words bounce in */
+.pop-in {
+  animation: pop-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.85);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pop-in {
+    animation: none;
+  }
+}

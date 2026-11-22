@@ -1,23 +1,9 @@
 // src/hooks/useContentLoader.tsx
-import { useState, useEffect, useMemo } from "react";
-import { format } from "date-fns";
+import { useState, useEffect } from "react";
+import type { MarkdownModule } from "@/types/markdown";
 
-// Re-using MarkdownFrontmatter and MarkdownModule types from Writing.tsx
-export type MarkdownFrontmatter = {
-  title: string;
-  date: string;
-  category?: string | string[];
-  readTime?: string;
-  mood?: string | string[];
-  pdfUrl?: string;
-  featured?: boolean;
-  excerpt?: string;
-};
-
-export type MarkdownModule = {
-  html: string;
-  attributes: MarkdownFrontmatter;
-};
+// Re-export shared types for existing consumers that import them from here.
+export type { MarkdownFrontmatter, MarkdownModule } from "@/types/markdown";
 
 // Define specific data types for clarity
 export type BlogPostOverviewData = {
@@ -50,7 +36,7 @@ interface UseContentLoaderResult<T> {
 
 export function useContentLoader<T>(
   contentType: ContentType,
-  sortKey: keyof T
+  sortKey: keyof T,
 ): UseContentLoaderResult<T> {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
@@ -90,8 +76,8 @@ export function useContentLoader<T>(
               const categoryArray = Array.isArray(frontmatter.category)
                 ? frontmatter.category
                 : typeof frontmatter.category === "string"
-                ? [frontmatter.category]
-                : ["Uncategorized"];
+                  ? [frontmatter.category]
+                  : ["Uncategorized"];
 
               return {
                 title: frontmatter.title,
@@ -107,8 +93,8 @@ export function useContentLoader<T>(
               const moodArray = Array.isArray(frontmatter.mood)
                 ? frontmatter.mood
                 : typeof frontmatter.mood === "string"
-                ? [frontmatter.mood]
-                : ["General"];
+                  ? [frontmatter.mood]
+                  : ["General"];
 
               return {
                 title: frontmatter.title,
@@ -120,7 +106,7 @@ export function useContentLoader<T>(
                 featured: frontmatter.featured || false,
               } as T;
             }
-          }
+          },
         );
 
         loadedItems.sort((a: T, b: T) => {

@@ -1,48 +1,39 @@
-
-import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const HeroCTAButtons = () => {
   const { theme } = useTheme();
-
-  const handleNavigation = () => {
-    setTimeout(() => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }, 100);
-  };
+  const isDark = theme === "dark";
+  const toTop = () => window.setTimeout(() => window.scrollTo({ top: 0 }), 50);
 
   return (
-    <div className="flex flex-col sm:flex-row gap-6 justify-center items-center relative">
+    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
       <Link
         to="/projects"
-        onClick={handleNavigation}
-        className={`group px-8 py-4 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 ${theme === "dark" ? "bg-fuchsia-500 hover:bg-fuchsia-600 text-white shadow-lg hover:shadow-xl" : "bg-fuchsia-600 hover:bg-fuchsia-700 text-white shadow-lg hover:shadow-xl"} hover:scale-105`}
+        onClick={toTop}
+        className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-[0_0_28px_-6px_rgba(217,70,239,0.7)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_36px_-4px_rgba(129,140,248,0.7)]"
       >
-        <span>View My Work</span>
+        View my work
         <ArrowRight
-          size={20}
-          className="group-hover:translate-x-1 transition-transform duration-300"
+          size={18}
+          className="transition-transform duration-300 group-hover:translate-x-1"
         />
       </Link>
 
       <Link
         to="/about"
-        onClick={handleNavigation}
-        className={`group px-8 py-4 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 border-2 hover:scale-105 ${theme === "dark" ? "border-fuchsia-400 text-fuchsia-400 hover:bg-fuchsia-400 hover:text-white" : "border-fuchsia-600 text-fuchsia-600 hover:bg-fuchsia-600 hover:text-white"}`}
+        onClick={toTop}
+        className={`group flex items-center gap-2 rounded-full border px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] backdrop-blur-md transition-all duration-300 hover:scale-105 ${
+          isDark
+            ? "border-indigo-400/50 text-indigo-300 hover:bg-indigo-400/10 hover:shadow-[0_0_24px_-6px_rgba(129,140,248,0.7)]"
+            : "border-indigo-500/50 bg-white/50 text-indigo-700 hover:bg-white/80"
+        }`}
       >
-        <span
-          className={`uppercase text-sm font-bold tracking-wider ${theme === "dark" ? "text-fuchsia-400" : "text-fuchsia-600"} group-hover:text-white`}
-        >
-          Reach Out
-        </span>
+        Reach out
         <ArrowRight
           size={16}
-          className="group-hover:translate-x-1 transition-transform duration-300"
+          className="transition-transform duration-300 group-hover:translate-x-1"
         />
       </Link>
     </div>

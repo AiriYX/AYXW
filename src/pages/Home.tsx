@@ -1,17 +1,18 @@
-import React from "react";
+import NeonPage from "@/components/theme/NeonPage";
 import HeroSection from "@/components/home/HeroSection";
-import BuildLab from "@/components/home/BuildLab";
-import AboutSection from "@/components/home/AboutSection";
-import QuickLinks from "@/components/Footer";
+import StackedProjects from "@/components/home/StackedProjects";
+import SkillMarquee from "@/components/home/SkillMarquee";
+import ExperienceLog from "@/components/home/ExperienceLog";
+import SignOff from "@/components/home/SignOff";
 
-const Home = () => {
-  return (
-    <div className="pt-20 relative overflow-hidden">
-      <HeroSection />
-      <BuildLab />
-      <AboutSection />
-    </div>
-  );
-};
+const Home = () => (
+  <NeonPage>
+    <HeroSection />
+    <StackedProjects />
+    <SkillMarquee />
+    <ExperienceLog />
+    <SignOff />
+  </NeonPage>
+);
 
 export default Home;

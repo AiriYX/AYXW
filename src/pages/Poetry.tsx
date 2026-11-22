@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import NeonPage from "@/components/theme/NeonPage";
+import PixelIcon from "@/components/theme/PixelIcon";
 import { format } from "date-fns"; // Add this import at the top
 
 // Re-using MarkdownFrontmatter and MarkdownModule types
@@ -49,12 +51,12 @@ const Poetry = () => {
         setLoading(true);
         const poemModules: Record<string, MarkdownModule> = import.meta.glob(
           "../contents/poems/*.md", // Point to the new poems directory
-          { eager: true }
+          { eager: true },
         );
 
         const normalizedSlug = slug.toLowerCase();
         const entry = Object.entries(poemModules).find(([path]) =>
-          path.toLowerCase().endsWith(`/poems/${normalizedSlug}.md`)
+          path.toLowerCase().endsWith(`/poems/${normalizedSlug}.md`),
         );
 
         if (!entry) {
@@ -71,8 +73,8 @@ const Poetry = () => {
         const moodArray = Array.isArray(frontmatter.mood)
           ? frontmatter.mood
           : typeof frontmatter.mood === "string"
-          ? [frontmatter.mood]
-          : ["General"]; // Default if no mood is provided
+            ? [frontmatter.mood]
+            : ["General"]; // Default if no mood is provided
 
         // MODIFIED: Use frontmatter.excerpt if available
         const poemExcerpt = frontmatter.excerpt;
@@ -165,76 +167,68 @@ const Poetry = () => {
     );
   }
 
+  const isDark = theme === "dark";
+
   return (
-    <div className="pt-20 min-h-screen">
-      <div className="max-w-4xl mx-auto px-6 py-16">
+    <NeonPage>
+      <div className="mx-auto max-w-xl px-4 py-12 md:py-16">
         <button
           onClick={() => navigate("/writing")}
-          className={`flex items-center gap-2 mb-8 transition-colors ${
-            theme === "dark"
-              ? "text-fuchsia-400 hover:text-fuchsia-300"
-              : "text-fuchsia-600 hover:text-fuchsia-500"
+          className={`mb-8 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors ${
+            isDark
+              ? "border-white/10 text-neutral-400 hover:border-pink-400/60 hover:text-pink-300"
+              : "border-pink-200 bg-white/60 text-slate-500 hover:border-pink-400 hover:text-pink-600"
           }`}
         >
-          <ArrowLeft size={16} />
-          Back to Writing
+          <ArrowLeft size={13} /> back to the board
         </button>
 
-        <article className="animate-fade-in">
-          <header className="mb-8 text-center">
-            {/* MODIFIED: Map over the mood array to create multiple pills */}
-            <div className="flex items-center justify-center gap-3 mb-4">
-              {poem.mood.map((moodItem, index) => (
-                <span
-                  key={index} // Use index as key if moodItem might not be unique
-                  className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    theme === "dark"
-                      ? "bg-rose-300/20 text-rose-300"
-                      : "bg-rose-200 text-rose-600"
-                  }`}
-                >
-                  {moodItem}
-                </span>
-              ))}
-            </div>
+        <article
+          className={`paper-note animate-fade-in relative rounded-md px-6 pb-8 pt-10 md:px-10 ${
+            isDark ? "paper-night" : "paper-day"
+          }`}
+          style={{ rotate: "0deg" }}
+        >
+          <span className="paper-tape absolute -top-3 left-1/2 h-6 w-24 -translate-x-1/2 rotate-[-3deg]" />
+          <header className="mb-4 text-center">
+            <PixelIcon name="moon" size={28} className="mx-auto" />
             <h1
-              className={`text-3xl md:text-4xl font-bold font-serif mb-4 ${
-                theme === "dark" ? "text-neutral-100" : "text-neutral-800"
+              className={`font-playwrite mt-2 text-2xl leading-[1.6] md:text-3xl ${
+                isDark ? "text-pink-200" : "text-pink-700"
               }`}
             >
               {poem.title}
             </h1>
-            <p
-              className={`text-sm ${
-                theme === "dark" ? "text-neutral-400" : "text-neutral-500"
-              }`}
-            >
-              {format(new Date(poem.date), "MMMM d,yyyy")}
-            </p>
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+              {poem.mood.map((m) => (
+                <span
+                  key={m}
+                  className={`ink-stamp rounded px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-[0.2em] ${
+                    isDark
+                      ? "border-pink-300/50 text-pink-300/80"
+                      : "border-pink-500/50 text-pink-600/80"
+                  }`}
+                >
+                  {m}
+                </span>
+              ))}
+              <span
+                className={`text-[10px] uppercase tracking-[0.2em] ${isDark ? "text-neutral-500" : "text-slate-400"}`}
+              >
+                {format(new Date(poem.date), "MMM d, yyyy")}
+              </span>
+            </div>
           </header>
 
-          {/* ADDED: Display excerpt if available on detail page (optional) */}
-          {poem.excerpt && (
-            <p
-              className={`text-lg italic text-center mb-8 ${
-                theme === "dark" ? "text-neutral-300" : "text-neutral-600"
-              }`}
-            >
-              "{poem.excerpt}"
-            </p>
-          )}
-
           <div
-            className={`prose max-w-2xl mx-auto text-center leading-relaxed text-lg font-light whitespace-pre-line ${
-              theme === "dark"
-                ? "prose-invert text-neutral-200"
-                : "text-neutral-700"
+            className={`font-playwrite whitespace-pre-line text-center text-[15px] leading-[2.05] [&_p]:mb-4 ${
+              isDark ? "text-neutral-200" : "text-slate-700"
             }`}
             dangerouslySetInnerHTML={{ __html: poem.content }}
           />
         </article>
       </div>
-    </div>
+    </NeonPage>
   );
 };
 

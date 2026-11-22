@@ -1,0 +1,196 @@
+/**
+ * Essay pages: "The Brewed Times" newspaper layout (cream by day, night edition by dark).
+ */
+
+/* ---------- essay: newspaper (NYT-inspired) ---------- */
+
+.newspaper {
+  --ink: 28 25 23;
+  --accent: #be185d;
+  color: rgb(var(--ink));
+  background:
+    radial-gradient(
+      120% 80% at 50% 0%,
+      rgba(255, 255, 255, 0.55),
+      transparent 60%
+    ),
+    #f7f2e7;
+  border-radius: 4px;
+  box-shadow:
+    0 30px 70px -30px rgba(80, 30, 60, 0.45),
+    0 0 0 1px rgba(28, 25, 23, 0.06);
+}
+/* night edition: dark newsprint, cream ink, neon-pink accents */
+.fx-dark .newspaper {
+  --ink: 236 229 214;
+  --accent: #f472b6;
+  background:
+    radial-gradient(
+      110% 60% at 50% 0%,
+      rgba(236, 72, 153, 0.1),
+      transparent 65%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.012) 0 2px,
+      transparent 2px 4px
+    ),
+    #15101d;
+  border: 1px solid rgba(244, 114, 182, 0.22);
+  box-shadow:
+    0 0 0 6px rgba(21, 16, 29, 0.85),
+    0 0 0 7px rgba(244, 114, 182, 0.12),
+    0 30px 80px -30px rgba(0, 0, 0, 0.95);
+}
+.fx-dark .newspaper .np-body img {
+  filter: saturate(0.85) brightness(0.92);
+}
+.np-meta {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.np-rule {
+  border-top: 1px solid rgb(var(--ink) / 0.85);
+}
+.np-double-rule {
+  border-top: 3px double rgb(var(--ink) / 0.85);
+  height: 4px;
+  border-bottom: 1px solid rgb(var(--ink) / 0.85);
+}
+
+.np-body {
+  font-size: 13.5px;
+  line-height: 1.75;
+  text-align: justify;
+  hyphens: auto;
+}
+@media (min-width: 768px) {
+  .np-body {
+    column-count: 2;
+    column-gap: 2.25rem;
+    column-rule: 1px solid rgb(var(--ink) / 0.18);
+  }
+}
+.np-body p {
+  margin: 0 0 0.9em;
+}
+.np-body .np-lead::first-letter {
+  float: left;
+  font-family: "Playwrite HU", cursive;
+  font-size: 3.4em;
+  line-height: 1;
+  padding: 0.12em 0.12em 0 0;
+  color: var(--accent);
+}
+.np-body h2,
+.np-body h3 {
+  break-after: avoid;
+  margin: 1.4em 0 0.5em;
+  padding-top: 0.5em;
+  border-top: 1px solid rgb(var(--ink) / 0.25);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: left;
+}
+.np-body h3 {
+  border-top: 0;
+  padding-top: 0;
+  letter-spacing: 0.06em;
+}
+.np-body p:has(> img),
+.np-body > img,
+.np-body figure {
+  column-span: all;
+  margin: 0.4em 0 1.4em;
+}
+.np-body img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 2px;
+  filter: saturate(0.9) contrast(1.02);
+}
+.np-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.np-body ul,
+.np-body ol {
+  margin: 0 0 0.9em 1.2em;
+  text-align: left;
+}
+.np-body ul {
+  list-style: disc;
+}
+.np-body ol {
+  list-style: decimal;
+}
+.np-body li {
+  margin: 0.15em 0;
+}
+.np-body blockquote {
+  break-inside: avoid;
+  margin: 1em 0;
+  padding: 0.6em 0;
+  border-top: 2px solid rgb(var(--ink));
+  border-bottom: 1px solid rgb(var(--ink));
+  font-weight: 700;
+  text-align: left;
+}
+.np-body strong {
+  font-weight: 700;
+}
+.np-body code {
+  font-size: 0.9em;
+  background: rgb(var(--ink) / 0.08);
+  padding: 0 0.25em;
+}
+
+.np-cited summary {
+  list-style: none;
+}
+.np-cited summary::-webkit-details-marker {
+  display: none;
+}
+.np-cited-list {
+  font-size: 10.5px;
+  line-height: 1.55;
+  opacity: 0.85;
+}
+@media (min-width: 768px) {
+  .np-cited-list {
+    column-count: 2;
+    column-gap: 2rem;
+  }
+}
+.np-cited-list ul,
+.np-cited-list ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.np-cited-list li {
+  break-inside: avoid;
+  margin-bottom: 0.55em;
+  padding-left: 1em;
+  text-indent: -1em;
+}
+.np-cited-list a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.np-cited-list p {
+  margin: 0;
+}
+.np-cited .np-toggle::after {
+  content: "(show)";
+}
+.np-cited[open] .np-toggle::after {
+  content: "(hide)";
+}

@@ -2,8 +2,36 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import NeonPage from "@/components/theme/NeonPage";
 import { loadMarkdownPost, BlogPostData } from "@/utils/markdownLoader";
 import { format } from "date-fns";
+
+/** Pull the "Works Cited / References" section off the end of an essay and
+ *  turn its raw URLs into short source links. */
+const splitCitations = (html: string) => {
+  const m = html.match(
+    /<h[2-4][^>]*>\s*(works cited|references|sources|bibliography)\s*<\/h[2-4]>/i,
+  );
+  // first text paragraph (not the cover image) gets the drop cap
+  const lead = (h: string) =>
+    h.replace(/<p>(?!\s*<img)/, '<p class="np-lead">');
+  if (!m || m.index === undefined)
+    return { body: lead(html), citations: "", citationCount: 0 };
+  const body = lead(html.slice(0, m.index));
+  const citations = html
+    .slice(m.index + m[0].length)
+    .replace(/<code>(https?:\/\/[^<\s]+)<\/code>/g, (_all, url: string) => {
+      let host = url;
+      try {
+        host = new URL(url).hostname.replace(/^www\./, "");
+      } catch {
+        /* keep raw */
+      }
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${host}</a>`;
+    });
+  const citationCount = (citations.match(/<li/g) || []).length;
+  return { body, citations, citationCount };
+};
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -76,66 +104,85 @@ const BlogPost = () => {
     );
   }
 
+  const isDark = theme === "dark";
+  const { body, citations, citationCount } = splitCitations(post.content);
+  const categories = (
+    Array.isArray(post.category) ? post.category : [post.category]
+  ).filter(Boolean);
+  const date = new Date(post.date);
+
   return (
-    <div className="pt-20 min-h-screen">
-      <div className="max-w-4xl mx-auto px-6 py-16">
+    <NeonPage>
+      <div className="mx-auto max-w-4xl px-3 py-10 md:px-6 md:py-14">
         <button
           onClick={() => navigate("/writing")}
-          className={`flex items-center gap-2 mb-8 transition-colors ${
-            theme === "dark"
-              ? "text-fuchsia-400 hover:text-fuchsia-300"
-              : "text-fuchsia-600 hover:text-fuchsia-500"
+          className={`mb-6 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors ${
+            isDark
+              ? "border-white/10 text-neutral-400 hover:border-pink-400/60 hover:text-pink-300"
+              : "border-pink-200 bg-white/60 text-slate-500 hover:border-pink-400 hover:text-pink-600"
           }`}
         >
-          <ArrowLeft size={16} />
-          Back to Writing
+          <ArrowLeft size={13} /> back to the board
         </button>
 
-        <article className="animate-fade-in">
-          <header className="mb-8">
-            <div className="flex items-center gap-4 mb-4">
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  theme === "dark"
-                    ? "bg-fuchsia-300/20 text-fuchsia-300"
-                    : "bg-fuchsia-200 text-fuchsia-600"
-                }`}
-              >
-                {post.category}
+        <article className="newspaper animate-fade-in px-5 py-6 sm:px-10 sm:py-8">
+          {/* masthead */}
+          <header className="text-center">
+            <div className="np-meta flex items-center justify-between np-hair border-b pb-1.5">
+              <span>New York</span>
+              <span className="hidden sm:inline">
+                {format(date, "EEEE, MMMM d, yyyy")}
               </span>
-              <div
-                className={`flex items-center gap-4 text-sm ${
-                  theme === "dark" ? "text-neutral-400" : "text-neutral-500"
-                }`}
-              >
-                <div className="flex items-center gap-1">
-                  <Calendar size={14} />
-                  <span>{format(new Date(post.date), "MMMM d, yyyy")}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Clock size={14} />
-                  <span>{post.readTime}</span>
-                </div>
-              </div>
+              <span>{post.readTime}</span>
             </div>
-            <h1
-              className={`text-3xl md:text-4xl font-bold font-serif mb-4 ${
-                theme === "dark" ? "text-neutral-100" : "text-neutral-800"
-              }`}
-            >
-              {post.title}
-            </h1>
+            <p className="font-playwrite py-3 text-3xl leading-[1.5] sm:text-5xl">
+              The Brewed Times
+            </p>
+            <div className="np-double-rule" />
+            <p className="np-meta py-1.5">
+              {categories.join(" · ") || "Essay"}
+            </p>
+            <div className="np-rule" />
           </header>
 
-          <div
-            className={`prose max-w-none ${
-              theme === "dark" ? "prose-invert" : ""
-            } prose-lg prose-headings:font-serif prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl`}
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          {/* headline */}
+          <div className="mx-auto max-w-2xl py-6 text-center">
+            <h1 className="text-[1.65rem] font-extrabold leading-[1.15] tracking-tight sm:text-4xl">
+              {post.title}
+            </h1>
+            {post.excerpt && (
+              <p className="mt-3 text-sm italic leading-6 opacity-75 sm:text-[15px]">
+                {post.excerpt}
+              </p>
+            )}
+            <p className="np-meta mt-4">
+              By <span className="font-bold">Airi Weng</span> ·{" "}
+              {format(date, "MMM d, yyyy")}
+            </p>
+          </div>
+          <div className="np-rule mb-6" />
+
+          {/* story */}
+          <div className="np-body" dangerouslySetInnerHTML={{ __html: body }} />
+
+          {/* condensed works cited */}
+          {citations && (
+            <details className="np-cited np-hair mt-8 border-t pt-3">
+              <summary className="np-meta cursor-pointer select-none">
+                Works cited · {citationCount} sources
+                <span className="np-toggle ml-1 opacity-60" />
+              </summary>
+              <div
+                className="np-cited-list mt-3"
+                dangerouslySetInnerHTML={{ __html: citations }}
+              />
+            </details>
+          )}
+
+          <p className="np-meta mt-8 text-center opacity-60">— 30 —</p>
         </article>
       </div>
-    </div>
+    </NeonPage>
   );
 };
 

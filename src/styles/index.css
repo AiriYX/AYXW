@@ -1,0 +1,12 @@
+/**
+ * All custom (non-Tailwind) styles, one file per area of the site.
+ * Edit the file for the page you are working on.
+ */
+@import "./theme.css";
+@import "./layout.css";
+@import "./home.css";
+@import "./projects.css";
+@import "./projects-street.css";
+@import "./about.css";
+@import "./writing.css";
+@import "./newspaper.css";

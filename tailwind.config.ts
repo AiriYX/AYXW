@@ -31,9 +31,14 @@ export default {
     },
     extend: {
       fontFamily: {
-        lacquer: ['"Lacquer"', "cursive"],
-        moirai: ['"Moirai One"', "cursive"],
-        playwrite: ['"Playwrite HU"', "serif"],
+        // Only two fonts on the site (the animated "Airi W" signature is the
+        // one exception):
+        // 1. Playwrite HU — display headings
+        // 2. JetBrains Mono — everything else (body, nav, cards, labels)
+        playwrite: ['"Playwrite HU"', "cursive"],
+        serif: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+        sans: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+        mono: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -123,12 +128,47 @@ export default {
             opacity: "1",
           },
         },
+        float: {
+          "0%, 100%": {
+            transform: "translateY(0) rotate(0deg)",
+          },
+          "50%": {
+            transform: "translateY(-14px) rotate(2deg)",
+          },
+        },
+        "pop-out": {
+          "0%": {
+            transform: "scale(1)",
+            opacity: "1",
+          },
+          "40%": {
+            transform: "scale(1.25)",
+            opacity: "1",
+          },
+          "100%": {
+            transform: "scale(0)",
+            opacity: "0",
+          },
+        },
+        burst: {
+          "0%": {
+            transform: "translate(0, 0) scale(1)",
+            opacity: "1",
+          },
+          "100%": {
+            transform: "translate(var(--tx, 0), var(--ty, 0)) scale(0)",
+            opacity: "0",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.6s ease-out",
         "scale-in": "scale-in 0.3s ease-out",
+        float: "float 5s ease-in-out infinite",
+        "pop-out": "pop-out 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+        burst: "burst 0.55s ease-out forwards",
       },
       transitionProperty: {
         bg: "background-color, background",

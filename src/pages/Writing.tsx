@@ -1,136 +1,212 @@
-// src/pages/Writing.tsx
-import React, { useMemo } from "react";
-import { useNavigate } from "react-router-dom"; // Keep navigate if it's used elsewhere
-
+import { useMemo } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import {
   useContentLoader,
-  BlogPostOverviewData,
-  PoemOverviewData,
-} from "@/hooks/useContentLoader"; // Import the new hook
-import { useCategoryFilter } from "@/hooks/useCategoryFilter"; // Import the new filter hook
+  type BlogPostOverviewData,
+  type PoemOverviewData,
+} from "@/hooks/useContentLoader";
+import NeonPage from "@/components/theme/NeonPage";
+import TypewriterLines from "@/components/writing/TypewriterLines";
+import BulletinBoard, {
+  type BoardSection,
+} from "@/components/writing/BulletinBoard";
+import type { WritingEntry } from "@/components/writing/WritingStopCard";
 
-import WritingPageHeader from "@/components/writing/WritingPageHeader";
-import ArticleList from "@/components/writing/ArticleList";
-import PoetrySection from "@/components/writing/PoetrySection";
+/**
+ * Board sections, in order. An essay goes in the section of its first
+ * matching category tag; every poem goes in Poetry. Add a section here and
+ * tag a post with one of its `tags` to give it its own corner of the board.
+ */
+const SECTIONS = [
+  {
+    id: "tech",
+    label: "Tech & AI",
+    emoji: "robot",
+    blurb: "thinking out loud about tech",
+    tags: ["AI/Tech", "Technology", "AI", "Tech"],
+  },
+  {
+    id: "research",
+    label: "Research",
+    emoji: "magnifier",
+    blurb: "rabbit holes, explained",
+    tags: ["Research"],
+  },
+  {
+    id: "learning",
+    label: "Learning",
+    emoji: "sprout",
+    blurb: "notes from building things",
+    tags: ["Learning"],
+  },
+];
+const POETRY = {
+  id: "poetry",
+  label: "Poetry",
+  emoji: "moon",
+  blurb: "for the feelings that don't fit in an essay",
+};
+
+const asArray = (v: string[] | string | undefined) =>
+  Array.isArray(v) ? v : v ? [v] : [];
 
 const Writing = () => {
   const { theme } = useTheme();
+  const isDark = theme === "dark";
 
-  // Load blog posts using the new hook
-  const {
-    data: allBlogPosts,
-    loading: loadingArticles,
-    error: errorArticles,
-  } = useContentLoader<BlogPostOverviewData>("blogs", "date");
+  const blogs = useContentLoader<BlogPostOverviewData>("blogs", "date");
+  const poems = useContentLoader<PoemOverviewData>("poems", "date");
 
-  // Load poems using the new hook
-  const {
-    data: allPoems,
-    loading: loadingPoems,
-    error: errorPoems,
-  } = useContentLoader<PoemOverviewData>("poems", "date");
+  const sections: BoardSection[] = useMemo(() => {
+    const newestFirst = (a: WritingEntry, b: WritingEntry) =>
+      +new Date(b.date) - +new Date(a.date);
 
-  // Define available categories/moods
-  const articleCategories = [
-    "All",
-    "AI/Tech",
-    "Research",
-    "Learning",
-    "Technology",
-  ];
-  const poemMoods = [
-    "All",
-    "Contemplative",
-    "Nostalgic",
-    "Introspective",
-    "Hopeful",
-    "Melancholic",
-  ];
-
-  // Use the new category filter hook for articles
-  const {
-    activeCategories: activeArticleCategories,
-    toggleCategory: toggleArticleCategory,
-    filterContent: filterArticles,
-  } = useCategoryFilter(articleCategories);
-
-  // Use the new category filter hook for poems
-  const {
-    activeCategories: activePoemMoods,
-    toggleCategory: togglePoemMood,
-    filterContent: filterPoems,
-  } = useCategoryFilter(poemMoods);
-
-  // Filter and number blog posts
-  const postsToDisplay = useMemo(() => {
-    const filtered = filterArticles(allBlogPosts, "articles");
-    return filtered.map((post, index) => ({
-      ...post,
-      number: String(index + 1).padStart(2, "0"),
+    const essays: WritingEntry[] = blogs.data.map((b) => ({
+      kind: "essay",
+      slug: b.slug,
+      title: b.title,
+      excerpt: b.excerpt,
+      date: b.date,
+      tags: asArray(b.category),
+      readTime: b.readTime,
     }));
-  }, [allBlogPosts, activeArticleCategories, filterArticles]);
 
-  // Filter poems
-  const poemsToDisplay = useMemo(() => {
-    return filterPoems(allPoems, "poems");
-  }, [allPoems, activePoemMoods, filterPoems]);
+    const essaySections = SECTIONS.map((s) => ({
+      ...s,
+      entries: essays
+        .filter((e) => {
+          const home = SECTIONS.find((sec) =>
+            e.tags.some((t) => sec.tags.includes(t)),
+          );
+          return home?.id === s.id;
+        })
+        .sort(newestFirst),
+    }));
 
-  if (loadingArticles || loadingPoems) {
-    return (
-      <div className="pt-20 min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div
-            className={`text-lg ${
-              theme === "dark" ? "text-neutral-300" : "text-neutral-600"
-            }`}
-          >
-            Loading content...
-          </div>
-        </div>
-      </div>
+    // essays whose tags match no section still get a spot
+    const unsorted = essays.filter(
+      (e) => !SECTIONS.some((s) => e.tags.some((t) => s.tags.includes(t))),
     );
-  }
+    if (unsorted.length)
+      essaySections.push({
+        id: "misc",
+        label: "Misc",
+        emoji: "folder",
+        blurb: "everything else",
+        tags: [],
+        entries: unsorted.sort(newestFirst),
+      });
 
-  if (errorArticles || errorPoems) {
-    return (
-      <div className="pt-20 min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Error loading content</h1>
-          <p
-            className={`text-sm ${
-              theme === "dark" ? "text-neutral-400" : "text-neutral-500"
-            }`}
-          >
-            {errorArticles || errorPoems}
-          </p>
-        </div>
-      </div>
-    );
-  }
+    const poetry = {
+      ...POETRY,
+      entries: poems.data
+        .map((p) => ({
+          kind: "poem" as const,
+          slug: p.slug,
+          title: p.title,
+          excerpt: p.excerpt,
+          date: p.date,
+          tags: asArray(p.mood),
+          pdfUrl: p.pdfUrl,
+        }))
+        .sort(newestFirst),
+    };
+
+    return [...essaySections, poetry].filter((s) => s.entries.length > 0);
+  }, [blogs.data, poems.data]);
+
+  const all = sections.flatMap((s) => s.entries);
+  const essaySections = sections.filter((s) => s.id !== "poetry");
+  const poemEntries = sections.find((s) => s.id === "poetry")?.entries ?? [];
+
+  // typewriter: each poem's opening line + each essay title
+  const teaser = useMemo(
+    () =>
+      all.map((e) =>
+        e.kind === "poem"
+          ? `"${e.excerpt.split(/(?<=[,.?!])\s+/)[0]}"`
+          : e.title,
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [sections],
+  );
+
+  const loading = blogs.loading || poems.loading;
+  const error = blogs.error || poems.error;
 
   return (
-    <div className="pt-20 min-h-screen">
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        <div className="animate-fade-in">
-          <WritingPageHeader />
+    <NeonPage>
+      <div className="mx-auto max-w-5xl px-4 py-10 md:px-6 md:py-14">
+        <header className="mb-8 text-center">
+          <p
+            className={`text-[11px] font-semibold uppercase tracking-[0.32em] ${
+              isDark ? "text-indigo-300/80" : "text-indigo-700/80"
+            }`}
+          >
+            {`// writing · ${String(all.length).padStart(2, "0")} pinned`}
+          </p>
+          <h1
+            className={`font-playwrite mt-2 pb-1 text-3xl leading-[1.5] md:text-5xl ${
+              isDark ? "fx-title-glow text-white" : "text-slate-900"
+            }`}
+          >
+            words,{" "}
+            <span className="bg-gradient-to-r from-fuchsia-500 via-violet-500 to-indigo-400 bg-clip-text text-transparent">
+              slowly brewed
+            </span>
+          </h1>
+          <p
+            className={`mx-auto mt-3 max-w-lg text-sm leading-relaxed md:text-base ${
+              isDark ? "text-neutral-400" : "text-slate-600"
+            }`}
+          >
+            Essays for the thoughts that don&apos;t fit in a GitHub repo, and
+            poems for the ones that don&apos;t fit in an essay.
+          </p>
 
-          <ArticleList
-            filteredPosts={postsToDisplay}
-            articleCategories={articleCategories}
-            activeCategories={activeArticleCategories}
-            toggleCategory={toggleArticleCategory}
-          />
+          <div
+            className={`mx-auto mt-4 flex max-w-xl items-center gap-3 rounded-full border px-4 py-2 text-left text-xs backdrop-blur-md md:text-sm ${
+              isDark
+                ? "border-fuchsia-400/25 bg-[#0d0b18]/70"
+                : "border-white bg-white/70"
+            }`}
+          >
+            <span
+              className={`shrink-0 text-[10px] font-extrabold uppercase tracking-[0.22em] ${
+                isDark ? "text-fuchsia-300" : "text-fuchsia-600"
+              }`}
+            >
+              now reading
+            </span>
+            <span
+              className={`min-w-0 truncate ${
+                isDark ? "text-neutral-200" : "text-slate-700"
+              }`}
+            >
+              <TypewriterLines lines={teaser} />
+            </span>
+          </div>
+        </header>
 
-          <PoetrySection
-            poems={poemsToDisplay}
-            poemMoods={poemMoods}
-            activePoemMoods={activePoemMoods}
-            togglePoemMood={togglePoemMood}
+        {loading && (
+          <p className="text-center text-sm text-neutral-500">
+            Pinning things up…
+          </p>
+        )}
+        {error && (
+          <p className="text-center text-sm text-rose-400">
+            Couldn&apos;t load writing: {error}
+          </p>
+        )}
+        {!loading && !error && (
+          <BulletinBoard
+            essays={essaySections}
+            poems={poemEntries}
+            isDark={isDark}
           />
-        </div>
+        )}
       </div>
-    </div>
+    </NeonPage>
   );
 };
 
