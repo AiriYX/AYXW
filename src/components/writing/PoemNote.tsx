@@ -73,7 +73,7 @@ const PoemNote = ({ entry, isDark, index }: Props) => {
               : "text-slate-500 group-hover:text-fuchsia-600"
           }`}
         >
-          {entry.pdfUrl ? "open poem" : "read poem"}
+          read poem
           <ArrowUpRight size={14} />
         </span>
       </div>

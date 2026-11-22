@@ -7,6 +7,7 @@ import CoffeeDoodleSides from "@/components/about/CoffeeDoodleSides";
 import AboutHero from "@/components/about/AboutHero";
 import ChatStory from "@/components/about/ChatStory";
 import QuoteReveal from "@/components/about/QuoteReveal";
+import WritingCorner from "@/components/about/WritingCorner";
 import PolaroidGallery from "@/components/about/PolaroidGallery";
 import PhotoLightbox from "@/components/about/PhotoLightbox";
 import { MenuItem, MenuSection, MenuSheet } from "@/components/about/Menu";
@@ -152,6 +153,15 @@ const About = () => {
                 />
               ))}
             </ul>
+          </MenuSection>
+
+          <MenuSection
+            isDark={isDark}
+            icon="pen"
+            title="After hours"
+            note="essays & poems, off the clock"
+          >
+            <WritingCorner isDark={isDark} />
           </MenuSection>
 
           <MenuSection isDark={isDark} icon="sparkle" title="Quote of the day">

@@ -17,10 +17,13 @@ const Navigation = () => {
   const typed = useTypedText(NAV_LOGO_TEXT);
   const scrolled = scrollY > 12;
 
-  const isActive = (path: string) =>
-    path === "/"
-      ? location.pathname === "/"
-      : location.pathname.startsWith(path);
+  const isActive = (path: string) => {
+    if (path === "/") return location.pathname === "/";
+    const link = NAV_LINKS.find((l) => l.path === path);
+    return [path, ...(link?.alsoActiveOn ?? [])].some((p) =>
+      location.pathname.startsWith(p),
+    );
+  };
   const toTop = () => scrollToTop();
 
   const handleLogoClick = (e: MouseEvent) => {

@@ -1,4 +1,6 @@
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import {
   useContentLoader,
@@ -137,13 +139,23 @@ const Writing = () => {
   return (
     <NeonPage>
       <div className="mx-auto max-w-5xl px-4 py-10 md:px-6 md:py-14">
+        <Link
+          to="/about"
+          className={`mb-6 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors ${
+            isDark
+              ? "border-white/10 text-neutral-400 hover:border-pink-400/60 hover:text-pink-300"
+              : "border-pink-200 bg-white/60 text-slate-500 hover:border-pink-400 hover:text-pink-600"
+          }`}
+        >
+          <ArrowLeft size={13} /> about me
+        </Link>
         <header className="mb-8 text-center">
           <p
             className={`text-[11px] font-semibold uppercase tracking-[0.32em] ${
               isDark ? "text-indigo-300/80" : "text-indigo-700/80"
             }`}
           >
-            {`// writing · ${String(all.length).padStart(2, "0")} pinned`}
+            {`// about · after hours · ${String(all.length).padStart(2, "0")} pinned`}
           </p>
           <h1
             className={`font-playwrite mt-2 pb-1 text-3xl leading-[1.5] md:text-5xl ${

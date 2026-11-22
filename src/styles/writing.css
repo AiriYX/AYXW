@@ -142,3 +142,32 @@
     transition: none;
   }
 }
+
+/* ---------- poem pages rendered from PDF ---------- */
+
+.pdf-page {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.04),
+    0 24px 50px -24px rgba(80, 40, 60, 0.45);
+}
+.fx-dark .pdf-page {
+  box-shadow:
+    0 0 0 1px rgba(244, 114, 182, 0.35),
+    0 0 30px -8px rgba(236, 72, 153, 0.55),
+    0 30px 60px -30px rgba(0, 0, 0, 0.9);
+}
+.pdf-skeleton {
+  aspect-ratio: 8.5 / 11;
+  animation: pdf-pulse 1.4s ease-in-out infinite;
+}
+@keyframes pdf-pulse {
+  50% { opacity: 0.6; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pdf-skeleton { animation: none; }
+}

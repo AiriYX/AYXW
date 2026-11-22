@@ -1,12 +1,19 @@
 import { Github, Linkedin, Mail, type LucideIcon } from "lucide-react";
 import { contactEmail } from "./home";
 
+export type NavLink = {
+  path: string;
+  label: string;
+  /** Other paths that should highlight this link (e.g. writing lives under About). */
+  alsoActiveOn?: string[];
+};
+
 /** Pages shown in the nav bar and the footer, in order. */
-export const NAV_LINKS = [
+export const NAV_LINKS: NavLink[] = [
   { path: "/", label: "Home" },
   { path: "/projects", label: "Projects" },
-  { path: "/writing", label: "Writing" },
-  { path: "/about", label: "About" },
+  // writing is personal, not career, so it's reached from the About page
+  { path: "/about", label: "About", alsoActiveOn: ["/writing"] },
 ];
 
 /** Initials the nav logo types out on every page load. */

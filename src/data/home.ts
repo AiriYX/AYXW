@@ -48,7 +48,7 @@ export const experiences: Experience[] = [
     role: "Business Analyst Intern",
     when: "May–Aug 2026",
     description:
-      "Wrote 30+ user stories, ran smoke/regression/edge-case testing across 8 apps (incl. AI chatbot validation), led UAT on 3 internal apps, and built Ask Brett: 48% fewer tokens, 74% faster.",
+      "user_stories: 30+ · qa_tested: 8 apps · uat_led: 3 apps · ship(ask_brett) → tokens −48%, latency −74%",
   },
   {
     icon: Briefcase,
@@ -57,7 +57,7 @@ export const experiences: Experience[] = [
     role: "Informational Systems Intern",
     when: "Jan 2025",
     description:
-      "Co-led a team of 4 evaluating Microsoft Copilot adoption; proposed process changes addressing 51% of identified inefficiencies and presented Excel adoption metrics to stakeholders.",
+      "audit(copilot_adoption) · role: co-lead, team of 4 · fixes_proposed: 51% of inefficiencies · report → stakeholders",
   },
   {
     icon: Users,
@@ -66,7 +66,7 @@ export const experiences: Experience[] = [
     role: "College Advising Intern",
     when: "Dec 2023–Feb 2024",
     description:
-      "Presented workshops to 100+ scholars and managed 1:1 advising for 15+ high school seniors.",
+      "workshops: 100+ scholars · advising: 15+ seniors, 1:1",
   },
   {
     icon: Users,
@@ -75,7 +75,7 @@ export const experiences: Experience[] = [
     role: "Teaching Assistant, Intro Web Design",
     when: "Aug 2022",
     description:
-      "Taught HTML, CSS and JavaScript to ~28 high schoolers through demos, lessons, labs and 1:1 debugging.",
+      "teach(html, css, js) · students: 28 · mode: demos + labs + 1:1 debugging",
   },
   {
     icon: GraduationCap,

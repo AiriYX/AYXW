@@ -20,15 +20,11 @@ const WritingStopCard = ({ entry, isDark, index }: Props) => {
   const navigate = useNavigate();
 
   const open = () => {
-    if (entry.kind === "poem" && entry.pdfUrl) {
-      window.open(entry.pdfUrl, "_blank", "noopener");
-    } else {
-      navigate(
-        entry.kind === "essay"
-          ? `/writing/blog/${entry.slug}`
-          : `/writing/poetry/${entry.slug}`,
-      );
-    }
+    navigate(
+      entry.kind === "essay"
+        ? `/writing/blog/${entry.slug}`
+        : `/writing/poetry/${entry.slug}`,
+    );
   };
 
   return (

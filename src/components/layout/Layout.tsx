@@ -1,7 +1,7 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import Navigation from "./Navigation";
 import Footer from "./footer/Footer";
+import ScrollToTop from "./ScrollToTop";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const Layout = () => {
@@ -13,6 +13,7 @@ const Layout = () => {
         theme === "dark" ? "bg-[#0c0716]" : "bg-[#ffeef6]"
       }`}
     >
+      <ScrollToTop />
       <Navigation />
       <main className="transition-all duration-300">
         <Outlet />

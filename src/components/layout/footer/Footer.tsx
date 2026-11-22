@@ -40,9 +40,9 @@ const Footer = () => {
           <Wordmark active={arrived} />
 
           <p
-            className={`mt-6 font-playwrite text-base leading-[1.9] md:text-lg ${soft}`}
+            className={`mt-6 font-mono text-base leading-[1.9] md:text-lg ${soft}`}
           >
-            good coffee, clean code, products made one cup at a time.
+            listen, think, and execute with intent.
           </p>
 
           {/* email + socials */}

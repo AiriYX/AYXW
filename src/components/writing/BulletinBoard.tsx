@@ -41,14 +41,11 @@ const Pin = ({ color }: { color: string }) => (
 const useOpen = () => {
   const navigate = useNavigate();
   return (e: WritingEntry) => {
-    if (e.kind === "poem" && e.pdfUrl)
-      window.open(e.pdfUrl, "_blank", "noopener");
-    else
-      navigate(
-        e.kind === "essay"
-          ? `/writing/blog/${e.slug}`
-          : `/writing/poetry/${e.slug}`,
-      );
+    navigate(
+      e.kind === "essay"
+        ? `/writing/blog/${e.slug}`
+        : `/writing/poetry/${e.slug}`,
+    );
   };
 };
 
